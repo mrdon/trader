@@ -26,7 +26,7 @@ class Market implements ExternalMarket {
     {
         final StringBuilder sb = new StringBuilder();
         items.each {Commodity c, Price p ->
-            sb.append('\t').append(c.name).append(" ").append(p).append('\n');
+            sb.append('\t').append(c.name).append(" - ").append(p.buy).append(' cr\n');
         };
         return sb.toString();
     }
