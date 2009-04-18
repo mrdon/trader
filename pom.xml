@@ -52,6 +52,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.guice</groupId>
+            <artifactId>guice</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+    </dependencies>
     
     <reporting>
         <plugins>

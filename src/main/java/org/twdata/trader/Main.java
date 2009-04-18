@@ -1,12 +1,12 @@
 package org.twdata.trader;
 
-import org.twdata.trader.model.Game;
+import org.twdata.trader.guice.SimpleContainer;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -15,58 +15,32 @@ public class Main
 {
     public static void main(String[] appArgs) throws IOException
     {
-        Session ses = new Session();
+        SimpleContainer container = new SimpleContainer();
+        Session ses = container.getSessionFactory().create("mrdon");
 
+        System.out.println("Welcome to trader\n");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        Class<Session> sessionClass = Session.class;
         String line;
-        while (!"quit".equals(line = reader.readLine()))
-        {
+        do {
+            line = reader.readLine();
             String[] args = line.split(" ");
-            Object[] cmdArgs = new Object[0];
             String cmd = args[0];
+
+            Map<String,String> params = new HashMap<String,String>();
             if (args.length > 1)
             {
-                cmdArgs = new Object[args.length - 1];
-            }
-            boolean found = false;
-            for (Method m : sessionClass.getDeclaredMethods())
-            {
-                if (cmd.equals(m.getName()) && m.getParameterTypes().length == cmdArgs.length)
-                {
-                    for (int x=0; x<m.getParameterTypes().length; x++) {
-                        Class type = m.getParameterTypes()[x];
-                        if (type == int.class) {
-                            cmdArgs[x] = Integer.parseInt(args[x + 1]);
-                        } else if (type == String.class) {
-                            cmdArgs[x] = args[x + 1];
-                        } else {
-                            throw new IllegalArgumentException("Unknown type: " + type);
-                        }
-                    }
-                    try
-                    {
-                        m.invoke(ses, cmdArgs);
-                    }
-                    catch (IllegalAccessException e)
-                    {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    }
-                    catch (InvocationTargetException e)
-                    {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    }
-                    found = true;
-                    break;
+                for (int x=1; x<args.length; x++) {
+                    String[] parts = args[x].split(":");
+                    if (parts.length != 2) throw new IllegalArgumentException("Missing parameter name: " + args[x]);
+                    params.put(parts[0], parts[1]);
                 }
             }
-            if (!found) {
-                System.out.println("Command not found");
-            }
+            ses.executeCommand(cmd, params);
         }
+        while (!"quit".equals(line));
+
         /*
-        ses.start("mrdon");
         ses.visitMarket();
         ses.buyCommodity("Food", 3);
         ses.leaveMarket();
@@ -81,6 +55,7 @@ public class Main
         ses.sellCommodity("Food", 4);
         ses.buyCommodity("Food", 3);
         ses.leaveMarket();
+        ses.quit();
         */
     }
 

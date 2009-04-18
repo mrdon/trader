@@ -9,6 +9,7 @@ class Trader implements ExternalTrader {
     long credits;
     City city;
     Ship ship;
+    int turns;
 
     public ExternalShip getExternalShip()
     {

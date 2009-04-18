@@ -1,4 +1,4 @@
-package org.twdata.trader
+package org.twdata.trader.storage
 
 import org.twdata.trader.model.ShipType
 import org.twdata.trader.model.Game
@@ -12,9 +12,9 @@ import org.twdata.trader.model.Ship
  * 
  */
 
-public class DataLoader {
+public class DefaultDataLoader implements DataLoader {
 
-    public Game load() {
+    private Game create() {
         def shipTypes = [
                 'Junker' : new ShipType( name: "Junker", holds: 10),
                 'Cruiser' :  new ShipType( name: "Cruiser", holds: 40),
@@ -32,13 +32,20 @@ public class DataLoader {
                 'Brennnat' : new City( name: 'Brennnat', market: new Market(commodities.values())),
                 'Othega' : new City( name: 'Othega', market: new Market(commodities.values()))];
 
-        def traders = [
-                'Donaea' : new Trader( name: 'Donaea', credits: 1000, city: cities['Sol'], ship: new Ship( type: shipTypes['Junker'], holds: [:])),
-                'Juena' : new Trader( name: 'Juena', credits: 1000, city: cities['Sol'], ship: new Ship( type: shipTypes['Cruiser'], holds: [:])),
-                'Paethe' : new Trader( name: 'Paethe', credits: 1000, city: cities['Brennnat'], ship: new Ship( type: shipTypes['Junker'], holds: [:])),
-        ]
+        def traders = [:]
 
         return new Game( cities: cities, traders: traders, commodities: commodities, shipTypes: shipTypes);
     }
 
+    public Game load(String playerName)
+    {
+        Game game = create();
+        def player = new Trader( name: playerName, credits: 1000, city: game.cities['Sol'], ship: new Ship( type: game.shipTypes['Junker'], holds: [:]));
+        game.traders[playerName] = player;
+        return game;
+    }
+
+    public void save(Game game)
+    {
+    }
 }

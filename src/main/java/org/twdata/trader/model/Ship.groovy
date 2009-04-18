@@ -15,6 +15,16 @@ class Ship implements ExternalShip {
         return total;
     }
 
+    public void removeHolds(Commodity c, int quantity) {
+        holds[c] -= quantity;
+        if (holds[c] == 0) holds.remove(c);
+    }
+
+    public void addHolds(Commodity c, int quantity) {
+        if (!holds.containsKey(c)) holds[c] = 0;
+        holds[c] += quantity;
+    }
+
     public String toString()
     {
         final StringBuilder sb = new StringBuilder(type.name);
