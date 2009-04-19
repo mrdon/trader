@@ -6,6 +6,7 @@ import org.twdata.trader.command.NotNull
 import org.twdata.trader.model.Commodity
 import org.twdata.trader.model.Market
 import org.twdata.trader.command.CommandErrors
+import org.twdata.trader.command.Param
 
 /**
  * 
@@ -13,13 +14,13 @@ import org.twdata.trader.command.CommandErrors
 
 public class SellCommodity extends AbstractCommand {
 
-    @NotNull Commodity commodity;
-    @NotNull int quantity;
+    @NotNull @Param Commodity commodity;
+    @NotNull @Param int quantity;
 
     public CommandErrors validate()
     {
         CommandErrors errors = super.validate();
-        if (player.ship.holds[commodity] >= quantity) {
+        if (player.ship.holds[commodity] < quantity) {
             errors.add("quantity", "Not " + quantity + " units of " + commodity.name + " to sell from holds");
         }
         return errors;

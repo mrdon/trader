@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  *
@@ -17,7 +18,7 @@ public class Main
     {
         SimpleContainer container = new SimpleContainer();
         Session ses = container.getSessionFactory().create("mrdon");
-
+        /*
         System.out.println("Welcome to trader\n");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -40,23 +41,22 @@ public class Main
         }
         while (!"quit".equals(line));
 
-        /*
-        ses.visitMarket();
-        ses.buyCommodity("Food", 3);
-        ses.leaveMarket();
-        ses.move("Justa");
-        ses.visitMarket();
-        ses.buyCommodity("Beer", 5);
-        ses.buyCommodity("Food", 1);
-        ses.leaveMarket();
-        ses.move("Brennnat");
-        ses.visitMarket();
-        ses.buyCommodity("Food", 3);
-        ses.sellCommodity("Food", 4);
-        ses.buyCommodity("Food", 3);
-        ses.leaveMarket();
-        ses.quit();
         */
+        ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
+        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
+        ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
+        ses.executeCommand("move", new HashMap<String,Object>(){{put("toCity", "Justa");}});
+        ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
+        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Beer"); put("quantity", 5);}});
+        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 1);}});
+        ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
+        ses.executeCommand("move", new HashMap<String,Object>(){{put("toCity", "Sol");}});
+        ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
+        //ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
+        ses.executeCommand("sellCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 4);}});
+        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
+        ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
+        ses.executeCommand("quit", Collections.<String, Object> emptyMap());
     }
 
 }

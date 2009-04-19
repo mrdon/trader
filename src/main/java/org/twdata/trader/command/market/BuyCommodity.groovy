@@ -6,6 +6,7 @@ import org.twdata.trader.command.NotNull
 import org.twdata.trader.model.Commodity
 import org.twdata.trader.model.Market
 import org.twdata.trader.command.CommandErrors
+import org.twdata.trader.command.Param
 
 /**
  * 
@@ -13,8 +14,8 @@ import org.twdata.trader.command.CommandErrors
 
 public class BuyCommodity extends AbstractCommand {
 
-    @NotNull Commodity commodity;
-    @NotNull int quantity;
+    @NotNull @Param Commodity commodity;
+    @NotNull @Param int quantity;
 
     public CommandErrors validate()
     {

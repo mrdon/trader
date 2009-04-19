@@ -9,8 +9,8 @@ import org.twdata.trader.model.Trader
 
 public abstract class AbstractCommand implements Command {
 
-    @NotNull Game game;
-    @NotNull Trader player;
+    @NotNull @Param Game game;
+    @NotNull @Param Trader player;
     
     public int getTurnCost()
     {

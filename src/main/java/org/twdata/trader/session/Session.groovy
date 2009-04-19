@@ -11,6 +11,12 @@ import org.twdata.trader.model.Game
 import org.twdata.trader.model.Trader
 import org.twdata.trader.model.external.ExternalGame
 import org.twdata.trader.model.external.ExternalTrader
+import org.twdata.trader.command.CommandErrors
+import java.lang.reflect.Field
+import org.twdata.trader.command.NotNull
+import org.twdata.trader.util.CommandUtil
+import org.twdata.trader.command.CommandException
+import org.twdata.trader.command.CommandFormatException
 
 /**
  * 
@@ -54,7 +60,7 @@ public class DefaultSession implements Session {
         }
     }
 
-    public void executeCommand(String name, Map<String,?> cmdArgs)
+    public void executeCommand(String name, Map<String,?> cmdArgs) throws CommandException, CommandFormatException
     {
         name = name.toLowerCase();
         def args = [:];
@@ -64,6 +70,8 @@ public class DefaultSession implements Session {
         CommandExecutor executor = commands[name];
         if (executor != null) {
             cmdArgs.each {String k,Object v ->
+                if (!executor.arguments[k])
+                    throw new CommandFormatException("Unexpected parameter: "+ k);
                 Class type = executor.arguments[k];
                 Object value = v;
                 if (!type.isAssignableFrom(v.getClass())) {
@@ -74,7 +82,7 @@ public class DefaultSession implements Session {
                     } else if (type == int.class) {
                         value = Integer.parseInt(v.toString());
                     } else {
-                        throw new IllegalArgumentException("Unable to convert type for argument " + k);
+                        throw new CommandFormatException("Unable to convert type for argument " + k);
                     }
                 }
                 args[k] = value;
@@ -82,17 +90,28 @@ public class DefaultSession implements Session {
             }
             def requiredState = executor.commandClass.getAnnotation(RequiredGameState.class);
             if (requiredState && state != requiredState.value()) {
-                throw new IllegalArgumentException("Not in required state: " + requiredState.value());
+                throw new CommandFormatException("Not in required state: " + requiredState.value());
             }
 
             // test for not null
 
             Command cmd = executor.commandClass.newInstance(args);
 
-            // validate
+            CommandUtil.eachPrivateParamField(executor.commandClass, { Field f ->
+                if (f.getAnnotation(NotNull.class)) {
+                    if (!f.get(cmd)) {
+                        throw new CommandFormatException("Null parameter " + f.getName() + " not allowed");
+                    }
+                }
+            });
+
+            CommandErrors errors = cmd.validate();
+            if (!errors.isEmpty()) {
+                throw new CommandFormatException("Errors: " + errors);
+            }
 
             if (player.turns < cmd.getTurnCost()) {
-                throw new IllegalArgumentException("Not enough turns left");
+                throw new CommandException("Not enough turns left");
             } else {
                 player.turns -= cmd.getTurnCost();
                 cmd.execute();
@@ -125,9 +144,8 @@ private class CommandExecutor {
 
     public CommandExecutor(Class<Command> cls) {
         commandClass = cls;
-        cls.methods.findAll{Method it -> it.name =~ /^get[A-Z]/ }.each{Method it ->
-            def name = it.name[3].toLowerCase()+it.name[4..-1];
-            arguments[name] = it.getReturnType();
-        };
+        CommandUtil.eachPrivateParamField(cls, {Field f ->
+            arguments[f.name] = f.getType();
+        });
     }
 }

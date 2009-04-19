@@ -5,12 +5,13 @@ import org.twdata.trader.command.NotNull
 import org.twdata.trader.model.City
 import org.twdata.trader.command.CommandErrors
 import org.twdata.trader.command.GameState
+import org.twdata.trader.command.Param
 
 /**
  * 
  */
 public class Move extends AbstractCommand {
-    @NotNull City toCity;
+    @NotNull @Param City toCity;
 
     public int getTurnCost() {
         return 4;
@@ -21,6 +22,7 @@ public class Move extends AbstractCommand {
         CommandErrors errs = super.validate();
         if (toCity == player.city)
             errs.add("toCity", "Target city must be different than current city");
+        return errs;
     }
 
 

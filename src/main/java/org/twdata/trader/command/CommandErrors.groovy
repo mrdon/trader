@@ -14,4 +14,24 @@ public class CommandErrors {
     def add(String field, String error) {
         fieldErrors[field] = error;
     }
+
+    def boolean isEmpty() {
+        return globalErrors.isEmpty() && fieldErrors.isEmpty();
+    }
+
+    public String toString()
+    {
+        String err = "Errors - global[";
+        globalErrors.each{
+            err += "${it}, ";
+        }
+        err += "] field[";
+        fieldErrors.each { k,v ->
+            err += "${k}:${v}, ";
+        }
+        err += "]";
+        return err;
+    }
+
+
 }
