@@ -4,8 +4,8 @@ import org.twdata.trader.model.external.ExternalShip;
 
 class Ship implements ExternalShip {
 
-    ShipType type;
-    Map<Commodity,Integer> holds;
+    @External ShipType type;
+    @External Map<Commodity,Integer> holds;
 
     public int getFreeHolds() {
         int total = type.holds;

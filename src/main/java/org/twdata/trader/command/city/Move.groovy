@@ -6,6 +6,7 @@ import org.twdata.trader.model.City
 import org.twdata.trader.command.CommandErrors
 import org.twdata.trader.command.GameState
 import org.twdata.trader.command.Param
+import org.twdata.trader.command.CommandResponse
 
 /**
  * 
@@ -27,9 +28,10 @@ public class Move extends AbstractCommand {
 
 
 
-    public GameState execute() {
+    public CommandResponse execute() {
         player.city = toCity;
-        return GameState.IN_CITY;
+        return new CommandResponse(state: GameState.IN_CITY,
+                                   modified: ["player": player]);
     }
 
     public String toString()

@@ -2,15 +2,16 @@ package org.twdata.trader.command.global
 
 import org.twdata.trader.command.AbstractCommand
 import org.twdata.trader.command.GameState
+import org.twdata.trader.command.CommandResponse
 
 /**
  * 
  */
 
 public class Quit extends AbstractCommand {
-    public GameState execute()
+    public CommandResponse execute()
     {
-        return GameState.END;
+        return new CommandResponse(state: GameState.END);
     }
 
     public String toString()

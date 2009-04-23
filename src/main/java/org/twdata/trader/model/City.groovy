@@ -2,9 +2,9 @@ package org.twdata.trader.model
 
 import org.twdata.trader.model.external.ExternalCity;
 
-class City implements ExternalCity {
-    String name;
-    Market market;
+class City {
+    @External String name;
+    @External Market market;
 
     public String toString()
     {

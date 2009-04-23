@@ -7,6 +7,7 @@ import org.twdata.trader.model.Commodity
 import org.twdata.trader.model.Market
 import org.twdata.trader.command.CommandErrors
 import org.twdata.trader.command.Param
+import org.twdata.trader.command.CommandResponse
 
 /**
  * 
@@ -31,13 +32,14 @@ public class SellCommodity extends AbstractCommand {
         player.city.market.items[commodity].buy * quantity
     }
 
-    public GameState execute()
+    public CommandResponse execute()
     {
         Market market = player.city.market;
         int price = market.items[commodity].sell * quantity;
         player.credits += price;
         player.ship.removeHolds(commodity, quantity);
-        return GameState.IN_MARKET;
+        return new CommandResponse(state: GameState.IN_MARKET,
+                                   modified: ["player": player, "ship":player.ship]);
     }
 
     public String toString()

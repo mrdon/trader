@@ -17,6 +17,7 @@ import org.twdata.trader.command.NotNull
 import org.twdata.trader.util.CommandUtil
 import org.twdata.trader.command.CommandException
 import org.twdata.trader.command.CommandFormatException
+import org.twdata.trader.command.CommandResponse
 
 /**
  * 
@@ -114,12 +115,15 @@ public class DefaultSession implements Session {
                 throw new CommandException("Not enough turns left");
             } else {
                 player.turns -= cmd.getTurnCost();
-                cmd.execute();
+                CommandResponse res = cmd.execute();
                 System.out.println(cmd.toString());
                 if (cmd.getTurnCost() > 0) {
                     System.out.println("You have " + player.turns + " turns and " + player.credits + " credits left");
                 }
+                //return res;
             }
+        }  else {
+            throw new CommandFormatException("Invalid command:" + name);
         }
     }
 

@@ -5,11 +5,11 @@ import org.twdata.trader.model.external.ExternalShip;
 
 class Trader implements ExternalTrader {
 
-    String name;
-    long credits;
-    City city;
-    Ship ship;
-    int turns;
+    @External String name;
+    @External long credits;
+    @External City city;
+    @External Ship ship;
+    @External int turns;
 
     public ExternalShip getExternalShip()
     {

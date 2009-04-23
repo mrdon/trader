@@ -2,6 +2,6 @@ package org.twdata.trader.model;
 
 @Immutable final class ShipType {
 
-    String name;
-    int holds;
+    @External String name;
+    @External int holds;
 }

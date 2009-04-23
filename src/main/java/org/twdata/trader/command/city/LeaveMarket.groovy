@@ -2,6 +2,7 @@ package org.twdata.trader.command.city
 
 import org.twdata.trader.command.AbstractCommand
 import org.twdata.trader.command.GameState
+import org.twdata.trader.command.CommandResponse
 
 /**
  * 
@@ -9,9 +10,9 @@ import org.twdata.trader.command.GameState
 
 public class LeaveMarket extends AbstractCommand {
 
-    public GameState execute()
+    public CommandResponse execute()
     {
-        return GameState.IN_CITY;
+        return new CommandResponse(state: GameState.IN_CITY);
     }
 
     public String toString()

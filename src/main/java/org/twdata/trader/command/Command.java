@@ -12,5 +12,5 @@ public interface Command
     int getTurnCost();
 
     CommandErrors validate();
-    GameState execute();
+    CommandResponse execute();
 }

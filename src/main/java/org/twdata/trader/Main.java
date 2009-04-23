@@ -1,6 +1,9 @@
 package org.twdata.trader;
 
 import org.twdata.trader.guice.SimpleContainer;
+import org.newdawn.slick.svg.InkscapeLoader;
+import org.newdawn.slick.svg.SimpleDiagramRenderer;
+import org.newdawn.slick.SlickException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +17,7 @@ import java.util.Collections;
  */
 public class Main
 {
-    public static void main(String[] appArgs) throws IOException
+    public static void main(String[] appArgs) throws IOException, SlickException
     {
         SimpleContainer container = new SimpleContainer();
         Session ses = container.getSessionFactory().create("mrdon");
@@ -42,6 +45,8 @@ public class Main
         while (!"quit".equals(line));
 
         */
+
+        
         ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
         ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
         ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
