@@ -19,6 +19,7 @@ public class SimpleGame extends BasicGame
     private TrueTypeFont font;
     private final Random rnd = new Random();
     private Starfield starfield;
+    private Image planet;
 
     public SimpleGame()
     {
@@ -37,6 +38,7 @@ public class SimpleGame extends BasicGame
         Font basefont = new Font("Verdana", Font.BOLD, 20);
         font = new TrueTypeFont(basefont, true);
         starfield = new Starfield(200, new Rectangle2D.Float(0, 768-710, 1024, 768-170));
+        planet = new Image("planet-red.png");
 
 
     }
@@ -63,6 +65,7 @@ public class SimpleGame extends BasicGame
         //g.scale(.1f,.1f);
         g.setBackground(Color.black);
         starfield.draw(g);
+        planet.draw(200f, 200f);
         
 
         font.drawString(150f, 768f - 175f, "0123456");
