@@ -1,15 +1,12 @@
 package org.twdata.trader;
 
 import org.twdata.trader.guice.SimpleContainer;
-import org.newdawn.slick.svg.InkscapeLoader;
-import org.newdawn.slick.svg.SimpleDiagramRenderer;
+import org.twdata.trader.ui.TraderGame;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.AppGameContainer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Collections;
 
 /**
@@ -21,6 +18,12 @@ public class Main
     {
         SimpleContainer container = new SimpleContainer();
         Session ses = container.getSessionFactory().create("mrdon");
+
+        AppGameContainer app = new AppGameContainer(new TraderGame());
+
+        app.setDisplayMode(1024, 768, false);
+        app.setTargetFrameRate(60);
+        app.start();
         /*
         System.out.println("Welcome to trader\n");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -46,22 +49,48 @@ public class Main
 
         */
 
-        
-        ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
-        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
-        ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
-        ses.executeCommand("move", new HashMap<String,Object>(){{put("toCity", "Justa");}});
-        ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
-        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Beer"); put("quantity", 5);}});
-        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 1);}});
-        ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
-        ses.executeCommand("move", new HashMap<String,Object>(){{put("toCity", "Sol");}});
-        ses.executeCommand("visitMarket", Collections.<String, Object> emptyMap());
+
+        ses.executeCommand("visitMarket", Collections.<String, Object>emptyMap());
+        ses.executeCommand("buyCommodity", new HashMap<String, Object>()
+        {{
+                put("commodity", "Food");
+                put("quantity", 3);
+            }});
+        ses.executeCommand("leaveMarket", Collections.<String, Object>emptyMap());
+        ses.executeCommand("move", new HashMap<String, Object>()
+        {{
+                put("toCity", "Justa");
+            }});
+        ses.executeCommand("visitMarket", Collections.<String, Object>emptyMap());
+        ses.executeCommand("buyCommodity", new HashMap<String, Object>()
+        {{
+                put("commodity", "Beer");
+                put("quantity", 5);
+            }});
+        ses.executeCommand("buyCommodity", new HashMap<String, Object>()
+        {{
+                put("commodity", "Food");
+                put("quantity", 1);
+            }});
+        ses.executeCommand("leaveMarket", Collections.<String, Object>emptyMap());
+        ses.executeCommand("move", new HashMap<String, Object>()
+        {{
+                put("toCity", "Sol");
+            }});
+        ses.executeCommand("visitMarket", Collections.<String, Object>emptyMap());
         //ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
-        ses.executeCommand("sellCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 4);}});
-        ses.executeCommand("buyCommodity", new HashMap<String,Object>(){{put("commodity", "Food"); put("quantity", 3);}});
-        ses.executeCommand("leaveMarket", Collections.<String, Object> emptyMap());
-        ses.executeCommand("quit", Collections.<String, Object> emptyMap());
+        ses.executeCommand("sellCommodity", new HashMap<String, Object>()
+        {{
+                put("commodity", "Food");
+                put("quantity", 4);
+            }});
+        ses.executeCommand("buyCommodity", new HashMap<String, Object>()
+        {{
+                put("commodity", "Food");
+                put("quantity", 3);
+            }});
+        ses.executeCommand("leaveMarket", Collections.<String, Object>emptyMap());
+        ses.executeCommand("quit", Collections.<String, Object>emptyMap());
     }
 
 }

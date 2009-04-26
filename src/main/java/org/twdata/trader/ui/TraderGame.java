@@ -1,4 +1,4 @@
-package org.twdata.trader;
+package org.twdata.trader.ui;
 
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
@@ -26,21 +26,9 @@ public class TraderGame extends StateBasedGame
         Font basefont = new Font("Verdana", Font.BOLD, 20);
         TrueTypeFont font = new TrueTypeFont(basefont, true);
         Hud hud = new Hud(font);
-        addState(new MenuState());
+        addState(new MenuState(1));
         addState(new ShipState(font, hud));
         
     }
 
-    public static void main(String[] args)
-			throws SlickException
-    {
-        //Renderer.setRenderer(Renderer.VERTEX_ARRAY_RENDERER);
-//			Renderer.setLineStripRenderer(Renderer.QUAD_BASED_LINE_STRIP_RENDERER);
-         AppGameContainer app =
-			new AppGameContainer(new TraderGame());
-
-         app.setDisplayMode(1024, 768, false);
-         app.setTargetFrameRate(60);
-         app.start();
-    }
 }

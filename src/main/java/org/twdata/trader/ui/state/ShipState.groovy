@@ -26,6 +26,7 @@ public class ShipState extends BasicGameState {
     private Starfield starfield;
     private Image planet;
     private final Hud hud;
+    private boolean warp = false;
 
 
     def ShipState(TrueTypeFont font, Hud hud)
@@ -53,8 +54,8 @@ public class ShipState extends BasicGameState {
     {
         g.setBackground(Color.black);
         starfield.draw(g);
-        planet.draw(200f, 200f);
-
+        if (!warp)
+            planet.draw(200f, 200f);
 
         font.drawString(150f, (float)(768f - 175f), "0123456");
 
@@ -69,6 +70,7 @@ public class ShipState extends BasicGameState {
         {
             game.enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
         } else if (input.isKeyDown(Input.KEY_W)) {
+            warp = true;
             starfield.warp();
         }
     }
