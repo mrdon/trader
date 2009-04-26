@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+  <screen id="start">
+    <layer id="layer" backgroundColor="#003f" childLayout="center">
+      <panel height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f"
+             childLayout="center" visibleToMouse="true">
+      </panel>
+    </layer>
+  </screen>
+</nifty>
