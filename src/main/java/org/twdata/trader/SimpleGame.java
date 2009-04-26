@@ -11,6 +11,11 @@ import org.newdawn.slick.svg.SimpleDiagramRenderer;
 import org.newdawn.slick.svg.InkscapeLoader;
 import org.newdawn.slick.svg.Diagram;
 import org.twdata.trader.ui.Starfield;
+import de.lessvoid.nifty.tools.TimeProvider;
+import de.lessvoid.nifty.sound.SoundSystem;
+import de.lessvoid.nifty.lwjglslick.render.RenderDeviceLwjgl;
+import de.lessvoid.nifty.lwjglslick.sound.SlickSoundDevice;
+import de.lessvoid.nifty.Nifty;
 
 public class SimpleGame extends BasicGame
 {
@@ -38,7 +43,8 @@ public class SimpleGame extends BasicGame
         Font basefont = new Font("Verdana", Font.BOLD, 20);
         font = new TrueTypeFont(basefont, true);
         starfield = new Starfield(200, new Rectangle2D.Float(0, 768-710, 1024, 768-170));
-        planet = new Image("planet-red.png");
+        planet = new Image("planet-blue.png");
+
 
 
     }
