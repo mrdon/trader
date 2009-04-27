@@ -27,8 +27,7 @@ import org.newdawn.slick.state.transition.FadeInTransition;
  *
  * @author kevin
  */
-public class MenuState extends BasicGameState
-{
+public class MenuState extends BasicGameState {
     private FengGuiWrapper feng;
 
     /**
@@ -36,87 +35,77 @@ public class MenuState extends BasicGameState
      *
      * @param slickGameStateId the slick gamestate id for this state
      */
-    public MenuState(final int slickGameStateId)
-    {
+    public MenuState(final int slickGameStateId) {
         //super(slickGameStateId);
     }
 
-	/** The ID given to this state */
-	public static final int ID = 1;
+    /** The ID given to this state   */
+    public static final int ID = 1;
 
-	/** The game holding this state */
-	private StateBasedGame game;
+    /** The game holding this state   */
+    private StateBasedGame game;
     private GameContainer gameContainer;
 
     /**
-	 * @see org.newdawn.slick.state.BasicGameState#getID()
-	 */
-	public int getID() {
-		return ID;
-	}
+     * @see org.newdawn.slick.state.BasicGameState#getID()
+     */
+    public int getID() {
+        return ID;
+    }
 
-	/**
-	 * @see org.newdawn.slick.state.BasicGameState#init(org.newdawn.slick.GameContainer, org.newdawn.slick.state.StateBasedGame)
-	 */
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		this.game = game;
+    /**
+     * @see org.newdawn.slick.state.BasicGameState#init(org.newdawn.slick.GameContainer, org.newdawn.slick.state.StateBasedGame)
+     */
+    public void init(GameContainer container, StateBasedGame game) throws SlickException {
+        this.game = game;
         this.gameContainer = container;
-        this.feng = new FengGuiWrapper(container, { Display desk ->
-           desk.getAppearance().add(new GradientBackground(Color.BLUE, Color.BLACK));
-           Container frame = new Container(new RowLayout(false));
-           desk.addWidget(frame);
-           frame.setX((int)(1024/2 - 500/2));
-           frame.setY((int)(768/2 - 500/2));
-           frame.setSize(500, 500);
-
-           frame.getAppearance().setPadding(new Spacing(40, 40));
-           frame.getAppearance().setMargin(new Spacing(40, 40));
-           frame.getAppearance().add(new PlainBackground(Color.BLACK));
-           frame.getAppearance().setBorder(new PlainBorder(Color.GREEN));
-
+        this.feng = new FengGuiWrapper(container, {Display desk ->
+            Container frame = new Container(new RowLayout(false));
+            desk.addWidget(frame);
+            frame.setX((int) (1024 / 2 - 500 / 2));
+            frame.setY((int) (768 / 2 - 500 / 2));
+            frame.setSize(500, 500);
 
             frame.addWidget(createMenuButton("Start Game", {
                 game.enterState(2, new FadeOutTransition(org.newdawn.slick.Color.black), new FadeInTransition(org.newdawn.slick.Color.black));
             }));
-           frame.addWidget(createMenuButton("Load Game"));
-           frame.addWidget(createMenuButton("Save Game"));
-           frame.addWidget(createMenuButton("Credits"));
-           frame.addWidget(createMenuButton("Exit", {
-               gameContainer.exit();
-           }));
+            frame.addWidget(createMenuButton("Load Game"));
+            frame.addWidget(createMenuButton("Save Game"));
+            frame.addWidget(createMenuButton("Credits"));
+            frame.addWidget(createMenuButton("Exit", {
+                gameContainer.exit();
+            }));
         });
         //fromXml("test.xml");
-	}
-    private Button createMenuButton(String text, Closure listener=null) {
+    }
+
+    private Button createMenuButton(String text, Closure listener = null) {
         Button btn = new Button(text);
         btn.getAppearance().setMargin(new Spacing(5, 0));
         btn.setTraversable(true);
         if (listener)
-            btn.addButtonPressedListener([buttonPressed : listener] as IButtonPressedListener);
+            btn.addButtonPressedListener([buttonPressed: listener] as IButtonPressedListener);
         return btn;
     }
 
 
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException
-    {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         feng.render(gameContainer, graphics);
     }
 
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException
-    {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
 
     }
 
 
     /**
-	 * @see org.newdawn.slick.state.BasicGameState#keyReleased(int, char)
-	 */
-	public void keyReleased(int key, char c) {
-		super.keyReleased(key, c);
-        if (key == Input.KEY_ESCAPE)
-        {
+     * @see org.newdawn.slick.state.BasicGameState#keyReleased(int, char)
+     */
+    public void keyReleased(int key, char c) {
+        super.keyReleased(key, c);
+        if (key == Input.KEY_ESCAPE) {
             gameContainer.exit();
         }
-	}
+    }
 
 }

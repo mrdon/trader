@@ -41,7 +41,7 @@
      inkscape:window-width="1672"
      inkscape:window-height="968"
      inkscape:window-x="0"
-     inkscape:window-y="54">
+     inkscape:window-y="25">
     <inkscape:grid
        enabled="true"
        visible="true"
@@ -256,6 +256,16 @@
          stdDeviation="0.95608471"
          id="feGaussianBlur5014" />
     </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4772"
+       id="linearGradient2458"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.6625579,0,0,0.5998562,-13.293795,103.96082)"
+       x1="216.1965"
+       y1="819.94635"
+       x2="563.92346"
+       y2="819.94635" />
   </defs>
   <metadata
      id="metadata7">
@@ -338,28 +348,13 @@
          x="38.849342"
          id="tspan4946"
          sodipodi:role="line">Credits</tspan></text>
-    <g
-       id="g5725"
-       transform="matrix(0.6077559,0,0,0.7308912,-1.0393729,-0.3247348)">
-      <rect
-         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient5018);stroke-width:7.19544983;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect4940"
-         width="370.78891"
-         height="49.155056"
-         x="219.67422"
-         y="791.05072" />
-      <text
-         xml:space="preserve"
-         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#10a700;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Semi-Bold"
-         x="225"
-         y="830"
-         id="text5150"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan5152"
-           x="225"
-           y="830">923929392</tspan></text>
-    </g>
+    <rect
+       y="577.84729"
+       x="132.46893"
+       height="35.926998"
+       width="225.34915"
+       id="rect4940"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient2458);stroke-width:4.79566574;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <rect
        y="625.20483"
        x="132.1875"
@@ -379,18 +374,6 @@
          x="38.540688"
          id="tspan5688"
          sodipodi:role="line">Holds</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text5690"
-       y="596.07166"
-       x="148.51086"
-       style="font-size:26.65943527px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#10a700;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Semi-Bold"
-       xml:space="preserve"
-       transform="scale(0.9118812,1.0966341)"><tspan
-         y="596.07166"
-         x="148.51086"
-         id="tspan5692"
-         sodipodi:role="line">10 Rice, 40 free</tspan></text>
     <rect
        y="672.09515"
        x="132.18748"
@@ -410,18 +393,6 @@
          x="38.540668"
          id="tspan5700"
          sodipodi:role="line">System</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text5702"
-       y="638.83002"
-       x="148.51083"
-       style="font-size:26.65943527px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#10a700;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Semi-Bold"
-       xml:space="preserve"
-       transform="scale(0.9118812,1.0966341)"><tspan
-         y="638.83002"
-         x="148.51083"
-         id="tspan5704"
-         sodipodi:role="line">Dublean</tspan></text>
     <g
        id="g5720"
        transform="matrix(0.6077559,0,0,0.7308912,59.736223,-1.0899814)">

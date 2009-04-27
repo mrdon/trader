@@ -1,10 +1,13 @@
 package org.twdata.trader.model
 
-import org.twdata.trader.model.external.ExternalCity;
+import org.twdata.trader.model.Coordinate
+import org.twdata.trader.model.Market
 
 class City {
-    @External String name;
-    @External Market market;
+    String name;
+    Market market;
+    Coordinate coordinate;
+    
 
     public String toString()
     {

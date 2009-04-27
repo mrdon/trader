@@ -19,7 +19,7 @@ public class Starfield {
     private final List<Point2D> warpPoints;
     private final Rectangle2D bounds;
     private final Random rnd = new Random();
-    private float warpLevel;
+    private GraphicsAnimation warp;
 
     public Starfield(int fieldsize, Rectangle2D bounds) {
         this.bounds = bounds;
@@ -34,7 +34,32 @@ public class Starfield {
     }
 
     public void warp() {
-        warpLevel = 1f;
+        warp = new GraphicsAnimation(
+                frames : 60,
+                totalTime: 3000,
+                drawClosure: {Graphics g, int frame ->
+                    stars.each {Star s ->
+                        float endx = s.x - s.trail.centerX;
+                        float endy = s.y - s.trail.centerY;
+                        float startx = endx / frame;
+                        float starty = endy / frame;
+                        def fill = new GradientFill(startx, starty, s.color, (float)(endx/5), (float)(endy/5), Color.black);
+                        g.fill(s.trail, fill);
+                        //g.scale(1, 1);
+                        /*g.color = Color.green;
+                        g.fillOval((float)(s.trail.centerX + startx), (float)(s.trail.centerY + starty), 5f, 5f);
+                        g.color = Color.red;
+                        g.fillOval((float)(s.trail.centerX + endx), (float)(s.trail.centerY + endy), 5f, 5f);
+                        */
+                    }
+                },
+                endClosure : { warp = null; }
+        );
+        warp.start();
+    }
+
+    public boolean inWarp() {
+        return warp != null;
     }
 
     public void draw(Graphics g) {
@@ -50,24 +75,8 @@ public class Starfield {
             g.color = s.color;
             float rad = s.size / 2;
             g.fillOval((float)(s.x - rad), (float)(s.y - rad), s.size, s.size);
-            if (warpLevel > 0) {
-
-                float endx = s.x - s.trail.centerX;
-                float endy = s.y - s.trail.centerY;
-                float startx = endx / warpLevel;
-                float starty = endy / warpLevel;
-                def fill = new GradientFill(startx, starty, s.color, (float)(endx/5), (float)(endy/5), Color.black);
-                g.fill(s.trail, fill);
-                /*g.color = Color.green;
-                g.fillOval((float)(s.trail.centerX + startx), (float)(s.trail.centerY + starty), 5f, 5f);
-                g.color = Color.red;
-                g.fillOval((float)(s.trail.centerX + endx), (float)(s.trail.centerY + endy), 5f, 5f);
-                */
-                if (warpLevel < 20) {
-                    warpLevel += 0.001f;
-                } else {
-                    warpLevel = 0;
-                }
+            if (warp != null) {
+                warp.render(g); 
             }
         };
     }

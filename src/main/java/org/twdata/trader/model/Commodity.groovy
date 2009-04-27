@@ -2,9 +2,9 @@ package org.twdata.trader.model;
 
 @Immutable final class Commodity implements Comparable<Commodity> {
 
-    @External String name;
-    @External int minPrice;
-    @External int maxPrice;
+    String name;
+    int minPrice;
+    int maxPrice;
 
     public int compareTo(Commodity o)
     {

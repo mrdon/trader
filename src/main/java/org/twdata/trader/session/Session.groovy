@@ -42,11 +42,11 @@ public class DefaultSession implements Session {
         player.turns = 50;
     }
 
-    public ExternalTrader getPlayer() {
+    public Trader getPlayer() {
         return player;
     }
 
-    public ExternalGame getGame() {
+    public Game getGame() {
         return game;
     }
 

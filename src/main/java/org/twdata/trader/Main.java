@@ -16,8 +16,8 @@ public class Main
 {
     public static void main(String[] appArgs) throws IOException, SlickException
     {
-        SimpleContainer container = new SimpleContainer();
-        Session ses = container.getSessionFactory().create("mrdon");
+        //SimpleContainer container = new SimpleContainer();
+        //Session ses = container.getSessionFactory().create("mrdon");
 
         AppGameContainer app = new AppGameContainer(new TraderGame());
 
@@ -49,7 +49,7 @@ public class Main
 
         */
 
-
+        /*
         ses.executeCommand("visitMarket", Collections.<String, Object>emptyMap());
         ses.executeCommand("buyCommodity", new HashMap<String, Object>()
         {{
@@ -91,6 +91,7 @@ public class Main
             }});
         ses.executeCommand("leaveMarket", Collections.<String, Object>emptyMap());
         ses.executeCommand("quit", Collections.<String, Object>emptyMap());
+        */
     }
 
 }

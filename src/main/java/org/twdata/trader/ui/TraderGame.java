@@ -1,24 +1,26 @@
 package org.twdata.trader.ui;
 
 import java.awt.Font;
-import java.awt.geom.Rectangle2D;
-import java.util.Random;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.svg.InkscapeLoader;
-import org.twdata.trader.ui.Starfield;
 import org.twdata.trader.ui.Hud;
 import org.twdata.trader.ui.state.MenuState;
 import org.twdata.trader.ui.state.ShipState;
+import org.twdata.trader.guice.SimpleContainer;
+import org.twdata.trader.Session;
 
 public class TraderGame extends StateBasedGame
 {
 
+    private final Session session;
+    private final SimpleContainer container;
 
     public TraderGame()
     {
         super("Space Trader");
+        container = new SimpleContainer();
+        session = container.getSessionFactory().create("mrdon");
     }
 
     public void initStatesList(GameContainer gameContainer) throws SlickException
@@ -27,8 +29,15 @@ public class TraderGame extends StateBasedGame
         TrueTypeFont font = new TrueTypeFont(basefont, true);
         Hud hud = new Hud(font);
         addState(new MenuState(1));
-        addState(new ShipState(font, hud));
+        addState(new ShipState(font, hud, session));
         
     }
 
+    public Session getSession() {
+        return session;
+    }
+
+    public SimpleContainer getSimpleContainer() {
+        return container;
+    }
 }

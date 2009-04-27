@@ -19,11 +19,11 @@ public class SimpleContainer {
     MarketUpdateStrategy marketUpdateStrategy;
 
     public SimpleContainer() {
-        dataLoader = new DefaultDataLoader();
+        this.dataLoader = new DefaultDataLoader();
 
-        ResolverUtil<?> resolver = new ResolverUtil<?>();
+        ResolverUtil<Command> resolver = new ResolverUtil<Command>();
         resolver.find(new ResolverUtil.IsA(Command.class), "org.twdata.trader.command.city", "org.twdata.trader.command.global", "org.twdata.trader.command.market");
-        sessionFactory = new DefaultSessionFactory(dataLoader, resolver.getClasses());
+        sessionFactory = new DefaultSessionFactory(this.dataLoader, resolver.getClasses());
         marketUpdateStrategy = new SimpleMarketUpdateStrategy();
     }
 

@@ -3,12 +3,12 @@ package org.twdata.trader.model
 import org.twdata.trader.model.simple.SimpleMarketUpdateStrategy
 import org.twdata.trader.model.external.ExternalMarket;
 
-class Market implements ExternalMarket {
-    @External Set<Commodity> commodities;
-    @External Map<Commodity,Price> items;
+class Market {
+    Set<Commodity> commodities;
+    Map<Commodity,Price> items;
     MarketUpdateStrategy updateStrategy;
 
-    def Market(commodities)
+    def Market(Set<Commodity> commodities)
     {
         this.commodities = commodities;
         this.updateStrategy = new SimpleMarketUpdateStrategy();
@@ -33,6 +33,6 @@ class Market implements ExternalMarket {
 }
 
 @Immutable final class Price {
-    @External int sell;
-    @External int buy;
+    int sell;
+    int buy;
 }
