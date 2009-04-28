@@ -56,6 +56,10 @@ public class FengGuiWrapper implements InputListener
         desk.layout();
    }
 
+    public void destroy() {
+        container.getInput().removeListener(this);
+    }
+
 
     public void render(GameContainer container, Graphics g)
    {

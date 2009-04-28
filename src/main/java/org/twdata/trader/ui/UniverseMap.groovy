@@ -86,5 +86,9 @@ public class UniverseMap {
         return btn;
     }
 
+    public void destroy() {
+        feng.destroy();
+    }
+
 
 }

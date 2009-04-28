@@ -1,7 +1,6 @@
 package org.twdata.trader.model
 
 import org.twdata.trader.model.simple.SimpleMarketUpdateStrategy
-import org.twdata.trader.model.external.ExternalMarket;
 
 class Market {
     Set<Commodity> commodities;

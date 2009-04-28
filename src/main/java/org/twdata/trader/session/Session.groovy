@@ -9,8 +9,6 @@ import org.twdata.trader.model.City
 import org.twdata.trader.model.Commodity
 import org.twdata.trader.model.Game
 import org.twdata.trader.model.Trader
-import org.twdata.trader.model.external.ExternalGame
-import org.twdata.trader.model.external.ExternalTrader
 import org.twdata.trader.command.CommandErrors
 import java.lang.reflect.Field
 import org.twdata.trader.command.NotNull
@@ -18,6 +16,8 @@ import org.twdata.trader.util.CommandUtil
 import org.twdata.trader.command.CommandException
 import org.twdata.trader.command.CommandFormatException
 import org.twdata.trader.command.CommandResponse
+import org.twdata.trader.event.TraderEventManager
+import org.twdata.trader.event.events.CommandExecutedEvent
 
 /**
  * 
@@ -29,8 +29,9 @@ public class DefaultSession implements Session {
     private int turnsLeft;
     private final Map<String,Class<Command>> commands;
     private GameState state;
+    private final TraderEventManager eventManager;
 
-    public DefaultSession (Game game, Trader player, Set<Class<Command>> commands) {
+    public DefaultSession (Game game, Trader player, Set<Class<Command>> commands, TraderEventManager eventManager) {
         def cmds = [:];
         commands.each {Class<Command> it ->
             cmds[it.simpleName.toLowerCase()] = new CommandExecutor(it);
@@ -38,6 +39,7 @@ public class DefaultSession implements Session {
         this.commands = cmds;
         this.player = player;
         this.game = game;
+        this.eventManager = eventManager;
         state = GameState.IN_CITY;
         player.turns = 50;
     }
@@ -116,10 +118,11 @@ public class DefaultSession implements Session {
             } else {
                 player.turns -= cmd.getTurnCost();
                 CommandResponse res = cmd.execute();
-                System.out.println(cmd.toString());
-                if (cmd.getTurnCost() > 0) {
-                    System.out.println("You have " + player.turns + " turns and " + player.credits + " credits left");
-                }
+                eventManager.broadcast(new CommandExecutedEvent(command: cmd, response: res, session:this));
+                //System.out.println(cmd.toString());
+                //if (cmd.getTurnCost() > 0) {
+                //    System.out.println("You have " + player.turns + " turns and " + player.credits + " credits left");
+                //}
                 //return res;
             }
         }  else {
@@ -141,6 +144,9 @@ public class DefaultSession implements Session {
         return c;
     }
 
+    public TraderEventManager getEventManager() {
+        return eventManager;
+    }
 }
 private class CommandExecutor {
     final Class<Command> commandClass;

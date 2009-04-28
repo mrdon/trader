@@ -7,6 +7,7 @@ class City {
     String name;
     Market market;
     Coordinate coordinate;
+    String imageId;
     
 
     public String toString()

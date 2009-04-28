@@ -3,6 +3,7 @@ package org.twdata.trader.session;
 import org.twdata.trader.SessionFactory;
 import org.twdata.trader.command.Command;
 import org.twdata.trader.Session;
+import org.twdata.trader.event.TraderEventManager;
 import org.twdata.trader.storage.DataLoader;
 import org.twdata.trader.model.Game;
 import org.twdata.trader.model.Trader;
@@ -18,17 +19,19 @@ public class DefaultSessionFactory implements SessionFactory
 
     private final Set<Class<Command>> commands;
     private final DataLoader dataLoader;
+    private final TraderEventManager eventManager;
 
-    public DefaultSessionFactory(DataLoader dataLoader, Set<Class<Command>> commands)
+    public DefaultSessionFactory(DataLoader dataLoader, Set<Class<Command>> commands, TraderEventManager eventManager)
     {
         this.commands = commands;
         this.dataLoader = dataLoader;
+        this.eventManager = eventManager;
     }
 
     public Session create(String name)
     {
         Game game = dataLoader.load(name);
         Trader player = game.getTraders().get(name);
-        return new DefaultSession(game, player, commands);
+        return new DefaultSession(game, player, commands, eventManager);
     }
 }

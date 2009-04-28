@@ -1,8 +1,5 @@
 package org.twdata.trader.model
 
-import org.twdata.trader.model.external.ExternalGame
-import org.twdata.trader.model.external.ExternalCity
-
 /**
  * 
  */

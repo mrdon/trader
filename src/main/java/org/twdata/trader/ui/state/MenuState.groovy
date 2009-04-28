@@ -59,7 +59,13 @@ public class MenuState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.game = game;
         this.gameContainer = container;
-        this.feng = new FengGuiWrapper(container, {Display desk ->
+
+        //fromXml("test.xml");
+    }
+
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        super.enter(gameContainer, stateBasedGame);
+        this.feng = new FengGuiWrapper(gameContainer, {Display desk ->
             Container frame = new Container(new RowLayout(false));
             desk.addWidget(frame);
             frame.setX((int) (1024 / 2 - 500 / 2));
@@ -76,8 +82,16 @@ public class MenuState extends BasicGameState {
                 gameContainer.exit();
             }));
         });
-        //fromXml("test.xml");
     }
+
+    public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        super.leave(gameContainer, stateBasedGame);
+        feng.destroy();
+    }
+
+
+
+
 
     private Button createMenuButton(String text, Closure listener = null) {
         Button btn = new Button(text);

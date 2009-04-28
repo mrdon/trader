@@ -27,9 +27,9 @@ public class TraderGame extends StateBasedGame
     {
         Font basefont = new Font("Verdana", Font.BOLD, 20);
         TrueTypeFont font = new TrueTypeFont(basefont, true);
-        Hud hud = new Hud(font);
+
         addState(new MenuState(1));
-        addState(new ShipState(font, hud, session));
+        addState(new ShipState(font, session));
         
     }
 

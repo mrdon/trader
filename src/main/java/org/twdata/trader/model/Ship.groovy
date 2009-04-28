@@ -1,7 +1,5 @@
 package org.twdata.trader.model
 
-import org.twdata.trader.model.external.ExternalShip;
-
 class Ship {
 
     ShipType type;
@@ -9,7 +7,7 @@ class Ship {
 
     public int getFreeHolds() {
         int total = type.holds;
-        holds.values().each {val ->
+        holds.values().each {int val ->
             total -= val;
         }
         return total;
