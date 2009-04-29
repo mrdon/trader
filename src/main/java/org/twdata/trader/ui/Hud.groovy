@@ -53,13 +53,19 @@ public class Hud {
                     ] as IButtonPressedListener);
             warp.getAppearance().setPadding(new Spacing(5, 5));
 
+            Button market = FengGUI.createButton(toolbar, "Market");
+            market.addButtonPressedListener([
+                            buttonPressed: { state.displayMarket(); }
+                    ] as IButtonPressedListener);
+            market.getAppearance().setPadding(new Spacing(5, 5));
+
             console = new TextEditor(true);
             session.eventManager.register(new CommandListener(onEvent: { CommandExecutedEvent evt ->
                     console.appendText("- ${evt.command.toString()}\n");
                     console.setCursorIndex(console.getText().length());
             }));
             console.setWordWarp(true);
-            console.appendText("asdfasdfasdf\nasdfasdfas\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf")
+            console.setEnabled(false); 
             ScrollContainer sc = new ScrollContainer();
             sc.addWidget(console); 
             sc.setLayoutData(BorderLayoutData.CENTER);
@@ -68,6 +74,14 @@ public class Hud {
         });
     }
 
+    public void loseFocus() {
+        this.feng.loseFocus();
+    }
+
+    public void gainFocus() {
+        this.feng.gainFocus();
+    }
+    
     public void destroy() {
         this.feng.destroy();
     }

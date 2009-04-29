@@ -13,9 +13,10 @@ import org.newdawn.slick.Input
 import org.twdata.trader.ui.Hud
 import org.newdawn.slick.state.transition.FadeOutTransition
 import org.newdawn.slick.state.transition.FadeInTransition
-import org.twdata.trader.ui.UniverseMap
 import org.twdata.trader.Session
 import org.twdata.trader.model.City
+import org.twdata.trader.ui.UniverseMap
+import org.twdata.trader.ui.MarketWindow
 
 /**
  * 
@@ -28,7 +29,8 @@ public class ShipState extends BasicGameState {
     private Starfield starfield;
     private Map<String,Image> planets;
     private final Hud hud;
-    private final UniverseMap universeMap;
+    private UniverseMap universeMap;
+    private MarketWindow marketWindow; 
     private Session session;
     private GameContainer gameContainer;
 
@@ -57,10 +59,6 @@ public class ShipState extends BasicGameState {
         gameContainer = null;
     }
 
-
-
-
-
     public void init(GameContainer gc, StateBasedGame stateBasedGame)
     {
         gameContainer = gc;
@@ -76,12 +74,17 @@ public class ShipState extends BasicGameState {
     }
 
     public void displayUniverseMap() {
-        universeMap = new UniverseMap(gameContainer, session.game.cities.values() as Set<City>, {String cityName ->
-            hideUniverseMap();
-            starfield.warp();
-            session.executeCommand("move", [toCity: cityName]);
-
-        });
+        universeMap = new UniverseMap(
+                gameContainer: gameContainer,
+                session: session,
+                onCitySelect: {String cityName ->
+                    hideUniverseMap();
+                    starfield.warp();
+                    session.executeCommand("move", [toCity: cityName]);
+                },
+                onClose: {hideUniverseMap()});
+        universeMap.init();
+        hud.loseFocus();
     }
 
     public void hideUniverseMap() {
@@ -89,6 +92,26 @@ public class ShipState extends BasicGameState {
             universeMap.destroy();
             universeMap = null;
         }
+        hud.gainFocus();
+    }
+
+    public void displayMarket() {
+        marketWindow = new MarketWindow(
+                gameContainer: gameContainer,
+                session: session,
+                onClose: {hideMarket()});
+        marketWindow.init();
+        session.executeCommand("visitMarket", [:]);
+        hud.loseFocus();
+    }
+
+    public void hideMarket() {
+        if (marketWindow) {
+            session.executeCommand("leaveMarket", [:]);
+            marketWindow.destroy();
+            marketWindow = null;
+        }
+        hud.gainFocus();
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics g)
@@ -105,6 +128,9 @@ public class ShipState extends BasicGameState {
         //g.drawString(session.player.credits + " cr", 150f, 580f);
         if (universeMap) {
             universeMap.render(g);
+        }
+        if (marketWindow) {
+            marketWindow.render(g);
         }
     }
 

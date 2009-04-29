@@ -48,16 +48,25 @@ public class FengGuiWrapper implements InputListener
    public FengGuiWrapper(GameContainer container, Closure guiBuilder)
    {
       this.container = container;
-      container.getInput().addPrimaryListener(this);
+
       container.getInput().enableKeyRepeat(500, 30);
       LWJGLBinding binding = new LWJGLBinding();
       desk = new org.fenggui.Display(binding);
        guiBuilder.call(desk);
         desk.layout();
+       gainFocus();
    }
 
-    public void destroy() {
+    public void loseFocus() {
         container.getInput().removeListener(this);
+    }
+
+    public void gainFocus() {
+        container.getInput().addPrimaryListener(this);
+    }
+
+    public void destroy() {
+        loseFocus();
     }
 
 
