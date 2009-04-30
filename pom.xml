@@ -17,66 +17,157 @@
 
 <!-- $Id: pom.xml 5558 2007-10-25 18:26:50Z user57 $ -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.twdata.trader</groupId>
     <artifactId>trader</artifactId>
     <name>Trader</name>
-    <packaging>groovy-jar</packaging>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <description>
         Simple trading game
     </description>
-    
+    <organization>
+        <name>Don Brown</name>
+    </organization>
+    <url>http://wiki.github.com/mrdon/trader</url>
+
     <build>
         <defaultGoal>install</defaultGoal>
-        
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo.groovy</groupId>
-                    <artifactId>groovy-maven-plugin</artifactId>
-                    <version>1.0-beta-3</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        
+
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo.groovy</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
-                <extensions>true</extensions>
-            </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                      <source>1.5</source>
-                      <target>1.5</target>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.0-rc-5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                        <sources>
+                            <fileset>
+                                <directory>${pom.basedir}/src/main/java</directory>
+                                <includes>
+                                    <include>**/*.groovy</include>
+                                </includes>
+                            </fileset>
+                        </sources>
+                        <providerSelection>1.6</providerSelection>
+
                     </configuration>
-                </plugin>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo.webstart</groupId>
+                <artifactId>webstart-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jnlp-inline</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jnlp>
+                        <inputTemplate>src/main/jnlp/template.vm</inputTemplate>
+
+                        <!-- used to automatically identify the jar containing the main class. -->
+                        <!-- this is perhaps going to change -->
+                        <mainClass>org.twdata.trader.Main</mainClass>
+                    </jnlp>
+
+
+                    <!-- SIGNING -->
+                    <!-- defining this will automatically sign the jar and its dependencies, if necessary -->
+                    <sign>
+                        <keystore>fillme</keystore>
+                        <keypass>fillme</keypass>
+                        <!-- we need to override passwords easily from the command line. ${keypass} -->
+                        <storepass>fillme</storepass>
+                        <!-- ${storepass} -->
+                        <!--storetype>fillme</storetype-->
+                        <alias>fillme</alias>
+
+                        <!--validity>fillme</validity-->
+
+                        <!-- only required for generating the keystore -->
+                        <dnameCn>fillme</dnameCn>
+                        <dnameOu>fillme</dnameOu>
+                        <dnameO>fillme</dnameO>
+                        <dnameL>fillme</dnameL>
+                        <dnameSt>fillme</dnameSt>
+                        <dnameC>fillme</dnameC>
+
+                        <verify>true</verify>
+                        <!-- verify that the signing operation succeeded -->
+
+                        <!-- KEYSTORE MANAGEMENT -->
+                        <keystoreConfig>
+                            <delete>true</delete>
+                            <!-- delete the keystore -->
+                            <gen>true</gen>
+                            <!-- optional shortcut to generate the store. -->
+                        </keystoreConfig>
+                    </sign>
+
+                    <!-- BUILDING PROCESS -->
+
+                    <pack200>true</pack200>
+                    <gzip>true</gzip>
+                    <!-- default force when pack200 false, true when pack200 selected ?? -->
+
+                    <!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
+                    <outputJarVersions>false</outputJarVersions>
+
+                    <!--install>false</install--> <!-- not yet supported -->
+                    <verbose>true</verbose>
+
+                </configuration>
+            </plugin>
+
 
         </plugins>
     </build>
 
+    <properties>
+        <gmaven.runtime>1.6</gmaven.runtime>
+    </properties>
+
     <dependencies>
-    <dependency>
-      <groupId>lwjgl</groupId>
-      <artifactId>lwjgl</artifactId>
-      <version>2.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>lwjgl</groupId>
-      <artifactId>jinput</artifactId>
-      <version>2.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>lwjgl</groupId>
-      <artifactId>lwjgl-util</artifactId>
-      <version>2.0.1</version>
-    </dependency>
+        <dependency>
+            <groupId>lwjgl</groupId>
+            <artifactId>lwjgl</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>lwjgl</groupId>
+            <artifactId>jinput</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>lwjgl</groupId>
+            <artifactId>lwjgl-util</artifactId>
+            <version>2.1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -93,10 +184,38 @@
             <artifactId>fenggui</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.codehaus.groovy.maven.runtime</groupId>
+            <artifactId>gmaven-runtime-1.6</artifactId>
+            <version>1.0-rc-5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>lwjgl</groupId>
+            <artifactId>natives-win32</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>lwjgl</groupId>
+            <artifactId>natives-mac</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>lwjgl</groupId>
+            <artifactId>natives-linux</artifactId>
+            <version>2.1.0</version>
+        </dependency>
     </dependencies>
-    
+
     <repositories>
         <repository>
             <id>slick</id>
@@ -105,10 +224,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-  <repository>
-      <id>nifty-maven-repo.sourceforge.net</id>
-          <url>http://nifty-gui.sourceforge.net/nifty-maven-repo</url>
-            </repository>
+        <repository>
+            <id>nifty-maven-repo.sourceforge.net</id>
+            <url>http://nifty-gui.sourceforge.net/nifty-maven-repo</url>
+        </repository>
     </repositories>
 
 </project>

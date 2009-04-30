@@ -1,8 +1,8 @@
 package org.twdata.trader.event.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.twdata.trader.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class DefaultTraderEventManager implements org.twdata.trader.event.TraderEventManager
 {
-    private static final Log log = LogFactory.getLog(DefaultTraderEventManager.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultTraderEventManager.class);
 
     private final Map<Class<?>,Set<Listener>> eventsToListener;
     private final ListenerMethodSelector[] listenerMethodSelectors;

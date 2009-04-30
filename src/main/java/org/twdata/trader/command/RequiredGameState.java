@@ -1,4 +1,4 @@
-package org.twdata.trader.command
+package org.twdata.trader.command;
 
 
 /**

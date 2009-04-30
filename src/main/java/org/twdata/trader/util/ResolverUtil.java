@@ -346,7 +346,7 @@ public class ResolverUtil<T> {
                     loadImplementationsInDirectory(test, packageName, file);
                 }
                 else {
-                    loadImplementationsInJar(test, packageName, file);
+                    loadImplementationsInJar(test, packageName, urlPath);
                 }
             }
             catch (IOException ioe) {
@@ -399,11 +399,11 @@ public class ResolverUtil<T> {
      * @param parent the parent package under which classes must be in order to be considered
      * @param jarfile the jar file to be examined for classes
      */
-    private void loadImplementationsInJar(Test test, String parent, File jarfile) {
+    private void loadImplementationsInJar(Test test, String parent, String jarfile) {
 
         try {
             JarEntry entry;
-            JarInputStream jarStream = new JarInputStream(new FileInputStream(jarfile));
+            JarInputStream jarStream = new JarInputStream(new URL(jarfile).openStream());
 
             while ( (entry = jarStream.getNextJarEntry() ) != null) {
                 String name = entry.getName();

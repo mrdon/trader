@@ -148,7 +148,7 @@ public class DefaultSession implements Session {
         return eventManager;
     }
 }
-private class CommandExecutor {
+class CommandExecutor {
     final Class<Command> commandClass;
     final Map<String,Class> arguments = [:];
 

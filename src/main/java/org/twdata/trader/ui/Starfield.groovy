@@ -82,7 +82,7 @@ public class Starfield {
     }
 }
 
-private class Star {
+class Star {
     final Rectangle2D bounds;
     final float x;
     final float y;
@@ -133,7 +133,7 @@ private class Star {
         }
         float len = new Line(x, y, (float)warpPoint.x, (float)warpPoint.y).length() + size;
         Polygon rect = new Polygon([x, y-size, x, y+size, x + len, y - (size*2), x + len, y + (size*2)] as float[]);
-        trail = rect.transform(Transform.createRotateTransform(warpAngle, x, y));
+        trail = rect.transform(Transform.createRotateTransform((float)warpAngle, x, y));
     }
 
 }

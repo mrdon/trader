@@ -31,7 +31,7 @@ public class DefaultSessionFactory implements SessionFactory
     public Session create(String name)
     {
         Game game = dataLoader.load(name);
-        Trader player = game.getTraders().get(name);
+        Trader player = (Trader) game.getTraders().get(name);
         return new DefaultSession(game, player, commands, eventManager);
     }
 }

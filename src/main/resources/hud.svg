@@ -18,8 +18,8 @@
    sodipodi:docname="hud.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:export-filename="/home/mrdon/dev/trader/src/main/resources/hud.png"
-   inkscape:export-xdpi="89.816254"
-   inkscape:export-ydpi="89.816254">
+   inkscape:export-xdpi="90.019997"
+   inkscape:export-ydpi="90.019997">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -32,7 +32,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.9899495"
      inkscape:cx="512.16292"
-     inkscape:cy="627.98181"
+     inkscape:cy="466.3574"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -220,7 +220,7 @@
        x2="800"
        y1="690"
        x1="800"
-       gradientTransform="matrix(0.6077559,0,0,-0.2030254,-8.0138368,217.19482)"
+       gradientTransform="matrix(0.6077559,0,0,-0.2030254,11.115745,215.28817)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient4912"
        xlink:href="#linearGradient4772"
@@ -396,8 +396,8 @@
        id="path4906" />
     <path
        sodipodi:nodetypes="cccccccc"
-       d="M 1013.0162,52.744297 L 1013.0162,4.018215 L -8.0138348,4.018215 L -8.0138348,52.744297 L 137.84759,77.107335 L 867.15475,77.107335 L 1013.0162,52.744297 L 1013.0162,52.744297"
-       style="opacity:0.76859502;fill:url(#linearGradient4912);fill-opacity:1;fill-rule:evenodd;stroke:#3f3394;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 1032.1458,50.837649 L 1032.1458,2.1115668 L 11.115747,2.1115668 L 11.115747,50.837649 L 156.97717,75.200687 L 886.28433,75.200687 L 1032.1458,50.837649 L 1032.1458,50.837649"
+       style="opacity:0.76859504;fill:url(#linearGradient4912);fill-opacity:1;fill-rule:evenodd;stroke:#3f3394;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path4910" />
   </g>
   <g

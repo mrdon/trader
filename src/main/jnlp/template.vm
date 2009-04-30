@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+    spec="$jnlpspec"
+    codebase="http://www.twdata.org/trader"
+    href="$outputFile">
+  <information>
+    <title>$project.Name</title>
+    <vendor>$project.Organization.Name</vendor>
+    <homepage href="$project.Url"/>
+    <description>$project.Description</description>
+#if($offlineAllowed)
+    <offline-allowed/>
+
+#end
+  </information>
+#if($allPermissions)
+  <security>
+     <all-permissions/>
+  </security>
+#end
+    <extension name="lwjgl" href="http://lwjgl.org/jnlp/extension.php" />
+  <resources>
+    <j2se version="$j2seVersion"/>
+     $dependencies
+  </resources>
+    <resources os="Windows">
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+" max-heap-size="128m"/>
+    <nativelib href="natives-win32-2.1.0.jar"/>
+  </resources>
+  <resources os="Linux">
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+" max-heap-size="128m"/>
+    <nativelib href="natives-linux-2.1.0.jar"/>
+  </resources>
+  <!--resources os="Mac OS"-->
+  <resources>
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+" max-heap-size="128m"/>
+    <nativelib href="natives-mac-2.1.0.jar"/>
+  </resources>
+  <component-desc/>
+  <application-desc main-class="$mainClass"/>
+
+</jnlp>
+
