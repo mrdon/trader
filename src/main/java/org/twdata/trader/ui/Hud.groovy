@@ -22,6 +22,11 @@ import org.twdata.trader.event.events.CommandExecutedEvent
 import org.twdata.trader.event.TraderEventListener
 import org.fenggui.composites.TextArea
 import org.fenggui.ScrollContainer
+import org.fenggui.border.BevelBorder
+import org.fenggui.util.Color
+import org.fenggui.background.PlainBackground
+import org.fenggui.Label
+import org.fenggui.layout.GridLayout
 
 /**
  * 
@@ -33,6 +38,10 @@ public class Hud {
     private GameContainer container;
     private ShipState state;
     private TextEditor console;
+    private Label statCredits;
+    private Label statCity;
+    private Label statTurns;
+    private Label statFreeHolds;
 
     public Hud(GameContainer container, ShipState state, Session session) {
         hud = new Image("hud.png");
@@ -71,6 +80,45 @@ public class Hud {
             sc.setLayoutData(BorderLayoutData.CENTER);
 		    panel.addWidget(sc);
 
+            Container stats = new Container();
+            stats.setLayoutManager(new GridLayout(4, 2));
+            stats.getAppearance().setPadding(new Spacing(5, 5));
+            stats.setX(20);
+            stats.setY(10);
+            stats.setSize(130, 130);
+            stats.getAppearance().setBorder(new BevelBorder(Color.BLACK, Color.GRAY));
+            stats.getAppearance().add(new PlainBackground(new Color(0, 0, 0, 0.8f)));
+
+            def label = {String txt ->
+                Label lbl = new Label(txt);
+                lbl.getAppearance().setTextColor(Color.WHITE);
+                return lbl;
+            }
+
+            stats.addWidget(label("City:" ));
+            statCity = label(session.player.city.name);
+            stats.addWidget(statCity);
+
+            stats.addWidget(label("Credits:"));
+            statCredits = label(session.player.credits as String);
+            stats.addWidget(statCredits);
+            
+            stats.addWidget(label("Turns:"));
+            statTurns = label(session.player.turns as String);
+            stats.addWidget(statTurns);
+
+
+            stats.addWidget(label("Free holds:"));
+            statFreeHolds = label(session.player.ship.freeHolds as String);
+            stats.addWidget(statFreeHolds);
+
+            session.getEventManager().register(new CommandListener(onEvent: { CommandExecutedEvent evt ->
+                    statCity.text = session.player.city.name;
+                    statCredits.text = session.player.credits as String;
+                    statTurns.text = session.player.turns as String;
+                    statFreeHolds.text = session.player.ship.freeHolds as String;
+                }));
+            desk.addWidget(stats);
         });
     }
 

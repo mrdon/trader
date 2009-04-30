@@ -36,10 +36,10 @@ import org.fenggui.layout.BorderLayout
 
 public abstract class HudWindow {
 
-    GameContainer gameContainer;
-    FengGuiWrapper feng;
-    Closure onClose;
-    Session session;
+    protected GameContainer gameContainer;
+    protected FengGuiWrapper feng;
+    protected Closure onClose;
+    protected Session session;
 
     public void init() {
         def x = 1024 / 2 - 800 / 2;
@@ -56,7 +56,8 @@ public abstract class HudWindow {
 		    frame.getAppearance().setPadding(Spacing.ZERO_SPACING);
             frame.getContentContainer().getAppearance().setMargin(Spacing.ZERO_SPACING);
 		    frame.getContentContainer().getAppearance().setPadding(Spacing.ZERO_SPACING);
-            org.fenggui.render.Binding.getInstance().setUseClassLoader(true);
+            frame.getContentContainer().getAppearance().add(new PlainBackground(new Color(255, 255, 255, 0.8f)));
+            org.fenggui.render.Binding.getInstance().setUseClassLoader(true); 
 
             frame.getAppearance().setBorder(new BevelBorder(new Color(0, 0, 0, 0.5f), new Color(255, 255, 255, 0.5f)));
             frame.addWindowClosedListener({

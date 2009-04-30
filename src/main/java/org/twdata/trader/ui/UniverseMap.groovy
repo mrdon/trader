@@ -13,6 +13,10 @@ import org.fenggui.util.Spacing
 import org.twdata.trader.model.City
 import org.twdata.trader.ui.HudWindow
 import org.fenggui.layout.StaticLayout
+import org.fenggui.Label
+import org.fenggui.background.PlainBackground
+import org.fenggui.background.GradientBackground
+import org.fenggui.layout.Alignment
 
 /**
  *
@@ -25,9 +29,12 @@ public class UniverseMap extends HudWindow {
     protected void populateWindow(Window frame) {
         frame.getContentContainer().setLayoutManager(new StaticLayout()); 
         frame.getContentContainer().getAppearance().add(new PixmapBackground(new Pixmap(org.fenggui.render.Binding.getInstance().getTexture("stars-800x600.png"))));
-
         session.game.cities.values().each { City c ->
-            frame.getContentContainer().addWidget(createSystemButton(c.name, c.coordinate.x, c.coordinate.y));
+            Button btn = createSystemButton(c.name, c.coordinate.x, c.coordinate.y);
+            if (session.player.city == c) {
+                btn.enabled = false;
+            }
+            frame.getContentContainer().addWidget(btn);
         }
     }
 

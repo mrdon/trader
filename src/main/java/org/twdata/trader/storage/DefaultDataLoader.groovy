@@ -29,8 +29,8 @@ public class DefaultDataLoader implements DataLoader {
 
         def cities = [
                 'Sol' : new City( name: 'Sol', imageId: "blue", coordinate: coord(100, 500), market: new Market((Set<Commodity>)commodities.values())),
-                'Justa' : new City( name: 'Justa', imageId: "land", coordinate: coord(300, 400), market: new Market((Set<Commodity>)commodities.values())),
-                'Brennnat' : new City( name: 'Brennnat', imageId: "blue", coordinate: coord(500, 150), market: new Market((Set<Commodity>)commodities.values())),
+                'Julani' : new City( name: 'Julani', imageId: "red", coordinate: coord(300, 400), market: new Market((Set<Commodity>)commodities.values())),
+                'Koas' : new City( name: 'Koas', imageId: "land", coordinate: coord(500, 150), market: new Market((Set<Commodity>)commodities.values())),
                 'Othega' : new City( name: 'Othega', imageId: "red", coordinate: coord(230, 310), market: new Market((Set<Commodity>)commodities.values()))];
 
         def traders = [:]

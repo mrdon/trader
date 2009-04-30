@@ -17,6 +17,7 @@ import org.twdata.trader.Session
 import org.twdata.trader.model.City
 import org.twdata.trader.ui.UniverseMap
 import org.twdata.trader.ui.MarketWindow
+import org.twdata.trader.model.Commodity
 
 /**
  * 
@@ -30,7 +31,7 @@ public class ShipState extends BasicGameState {
     private Map<String,Image> planets;
     private final Hud hud;
     private UniverseMap universeMap;
-    private MarketWindow marketWindow; 
+    private MarketWindow marketWindow;
     private Session session;
     private GameContainer gameContainer;
 
@@ -99,7 +100,20 @@ public class ShipState extends BasicGameState {
         marketWindow = new MarketWindow(
                 gameContainer: gameContainer,
                 session: session,
-                onClose: {hideMarket()});
+                onClose: {hideMarket()},
+                onOk: { Map<Commodity,Integer> sellValues, Map<Commodity,Integer> buyValues ->
+                    sellValues.each { Commodity c, int value ->
+                        if (value > 0) {
+                            session.executeCommand("sellCommodity", [commodity: c, quantity: value]);
+                        }
+                    };
+                    buyValues.each { Commodity c, int value ->
+                        if (value > 0) {
+                            session.executeCommand("buyCommodity", [commodity: c, quantity: value]);
+                        }
+                    }
+                    hideMarket();
+                });
         marketWindow.init();
         session.executeCommand("visitMarket", [:]);
         hud.loseFocus();
@@ -142,16 +156,27 @@ public class ShipState extends BasicGameState {
         {
             if (universeMap) {
                 hideUniverseMap();
+            } else if (marketWindow) {
+                hideMarket();
             } else {
                 game.enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             }
-        } else if (input.isKeyDown(Input.KEY_W)) {
-            starfield.warp();
-        } else if (input.isKeyPressed(Input.KEY_M)) {
-            if (!universeMap) {
-                displayUniverseMap();
-            } else {
-                hideUniverseMap();
+        }
+        if (!universeMap && !marketWindow) {
+            if (input.isKeyDown(Input.KEY_W)) {
+                starfield.warp();
+            } else if (input.isKeyPressed(Input.KEY_U)) {
+                if (!universeMap) {
+                    displayUniverseMap();
+                } else {
+                    hideUniverseMap();
+                }
+            } else if (input.isKeyPressed(Input.KEY_M)) {
+                if (!marketWindow) {
+                    displayMarket();
+                } else {
+                    hideMarket();
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ public class VisitMarket extends AbstractCommand {
 
     public String toString()
     {
-        return "Visit market: \n" + player.city.market;
+        return "Visit market";
     }
 
 
