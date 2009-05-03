@@ -19,6 +19,7 @@ import org.fenggui.background.PlainBackground;
 import org.fenggui.background.GradientBackground;
 import org.fenggui.util.Spacing;
 import org.fenggui.util.Color;
+import org.fenggui.util.Point;
 import org.fenggui.border.BevelBorder;
 import org.fenggui.border.PlainBorder;
 import org.newdawn.slick.GameContainer;
@@ -69,6 +70,23 @@ public class FengGuiWrapper implements InputListener
         loseFocus();
     }
 
+
+    public int getX() {
+        return desk.getDisplayX();
+    }
+    public int getY() {
+        return desk.getDisplayY();
+    }
+
+    public int getWidth() {
+        return desk.getWidth();
+    }
+    public int getHeight() {
+        return desk.getHeight();
+    }
+    public int getBorderWidth() {
+        return desk.getAppearance().getBorder().getTop();
+    }
 
     public void render(GameContainer container, Graphics g)
    {

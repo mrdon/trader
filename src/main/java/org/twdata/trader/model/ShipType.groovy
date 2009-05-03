@@ -4,4 +4,5 @@ package org.twdata.trader.model;
 
     String name;
     int holds;
+    int warpHops;
 }

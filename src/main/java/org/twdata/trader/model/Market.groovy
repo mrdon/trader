@@ -11,13 +11,16 @@ public class Market {
     private final Random rnd = new Random();
     private final int updatePeriod;
     private int lastUpdate;
+    private final List<PriceEvent> priceEvents;
+    PriceEvent activeEvent;
 
-    public Market(Set<Commodity> commodities)
+    public Market(Set<Commodity> commodities, List<PriceEvent> priceEvents)
     {
         this.commodities = commodities;
         items = new TreeMap<Commodity,Price>();
         updatePeriod = rnd.nextInt(20) + 10;
         EventManager.register(this);
+        this.priceEvents = priceEvents;
         items = update(commodities);
     }
 
@@ -41,9 +44,30 @@ public class Market {
     protected Map<Commodity, Price> update(Collection<Commodity> commodities)
     {
         def items = new TreeMap<Commodity,Price>();
+         if (rnd.nextInt(2) == 0) {
+            activeEvent = priceEvents.get(rnd.nextInt(priceEvents.size()));
+        } else {
+            activeEvent = null;
+        }
         commodities.each {Commodity c ->
-            def price = calcPrice(c);
-            items[c] = new Price(sell: price, buy: price);
+
+            def price1 = calcPrice(c);
+            def price2 = calcPrice(c);
+
+            if (activeEvent && activeEvent.commodity == c) {
+                if (activeEvent.modifier > 0) {
+                    price1 *= activeEvent.modifier;
+                    price2 *= activeEvent.modifier;
+                } else {
+                    price1 /= -1 * activeEvent.modifier;
+                    price2 /= -1 * activeEvent.modifier;
+                }
+            }
+            if (price1 >= price2) {
+                items[c] = new Price(sell: price1, buy: price2);
+            } else {
+                items[c] = new Price(sell: price2, buy: price1);
+            }
         };
         return items;
     }
@@ -56,7 +80,7 @@ public class Market {
     }
 }
 
-@Immutable final class Price {
+@Immutable final static class Price {
     int sell;
     int buy;
 }

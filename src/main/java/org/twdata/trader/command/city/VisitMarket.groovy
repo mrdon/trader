@@ -10,12 +10,6 @@ import org.twdata.trader.command.CommandResponse
 
 public class VisitMarket extends AbstractCommand {
 
-    public int getTimeCost()
-    {
-        return 1;
-    }
-
-
     public CommandResponse execute()
     {
         return new CommandResponse(state: GameState.IN_MARKET);
@@ -25,8 +19,4 @@ public class VisitMarket extends AbstractCommand {
     {
         return "Visit market";
     }
-
-
-
-
 }

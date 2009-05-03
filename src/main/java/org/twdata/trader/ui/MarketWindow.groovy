@@ -23,6 +23,8 @@ import org.fenggui.composites.TextArea
 import org.fenggui.layout.Alignment
 import org.fenggui.layout.StaticLayout
 import org.fenggui.event.IWindowClosedListener
+import org.fenggui.border.PlainBorder
+import org.fenggui.util.Color
 
 /**
  *
@@ -50,11 +52,20 @@ public class MarketWindow extends HudWindow {
         
         main.setLayoutManager(new BorderLayout());
 
+        Container top = new Container(new RowLayout(false));
+        top.setLayoutData(BorderLayoutData.NORTH);
+        main.addWidget(top);
+
+        Label priceEvent = new Label(market.activeEvent ? market.activeEvent.text : "");
+        priceEvent.getAppearance().setAlignment(Alignment.MIDDLE);
+        priceEvent.getAppearance().add(new PlainBorder(Color.RED, 1));
+        priceEvent.getAppearance().setMargin(new Spacing(5,50));
+        priceEvent.getAppearance().setPadding(new Spacing(5, 5));
+        top.addWidget(priceEvent);
         Container table = new Container();
-        table.setLayoutData(BorderLayoutData.NORTH);
         table.getAppearance().setMargin(new Spacing(10, 10));
         table.getAppearance().setPadding(new Spacing(5, 5));
-        main.addWidget(table);
+        top.addWidget(table);
 
         table.setLayoutManager(new GridLayout(market.commodities.size() + 1, 3));
         table.getAppearance().setPadding(new Spacing(20, 30));
@@ -71,7 +82,7 @@ public class MarketWindow extends HudWindow {
             Container sell = new Container();
             sell.setLayoutManager(new RowLayout());
             sell.getAppearance().setPadding(new Spacing(0, 10));
-            Label sellcr = new Label(p.sell + " cr");
+            Label sellcr = new Label(p.buy + " cr");
             sellcr.setMinSize(minLabelSize, 0);
             sell.addWidget(sellcr);
             sellFields[c] = textEditor();
@@ -87,7 +98,7 @@ public class MarketWindow extends HudWindow {
             Container buy = new Container();
             buy.setLayoutManager(new RowLayout());
             buy.getAppearance().setPadding(new Spacing(0, 10));
-            Label buycr = new Label(p.buy + " cr");
+            Label buycr = new Label(p.sell + " cr");
             buycr.setMinSize(minLabelSize, 0);
             buy.addWidget(buycr);
             buyFields[c] = textEditor();

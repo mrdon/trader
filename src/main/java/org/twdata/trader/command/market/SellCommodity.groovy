@@ -44,7 +44,7 @@ public class SellCommodity extends AbstractCommand {
 
     public String toString()
     {
-        return "Sell " + quantity + " units of " + commodity;
+        return "Sell " + quantity + " units of " + commodity.name;
     }
 
 
