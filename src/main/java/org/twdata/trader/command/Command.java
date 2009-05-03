@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public interface Command
 {
-    int getTurnCost();
+    int getTimeCost();
 
     CommandErrors validate();
     CommandResponse execute();

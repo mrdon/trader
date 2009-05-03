@@ -8,12 +8,14 @@ import org.newdawn.slick.Graphics
 
 public class GraphicsAnimation {
 
-    Closure drawClosure;
-    Closure endClosure;
+    Closure onRender;
+    Closure onNewFrame;
+    Closure onEnd;
     int frames;
     long totalTime;
     boolean loop;
     boolean active;
+    int lastFrame = -1;
 
     private final long[] frameUpdates;
 
@@ -39,14 +41,21 @@ public class GraphicsAnimation {
             boolean drawn = false;
             for (x in 0..frames-1) {
                 if (!drawn && frameUpdates[x] > now) {
+                    int frame = Math.max(0, x-1);
+                    if (lastFrame != frame) {
+                        onNewFrame(lastFrame, frame);
+                        lastFrame = frame;
+                    }
                     //println("Drawing frame ${x} with ${(frameUpdates[x]-now)/1000000}ms to go");
-                    drawClosure(g, Math.max(0, x-1));
+                    if (onRender) {
+                        onRender(g, frame);
+                    }
                     drawn = true;
                 }
             }
             if (!drawn) {
                 active = false;
-                endClosure();
+                onEnd();
             }
         }
     }

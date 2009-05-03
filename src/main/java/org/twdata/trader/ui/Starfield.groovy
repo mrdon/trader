@@ -9,6 +9,9 @@ import org.newdawn.slick.geom.Line
 import org.newdawn.slick.geom.Polygon
 import org.newdawn.slick.fills.GradientFill
 import org.newdawn.slick.geom.Transform
+import org.newdawn.slick.geom.Vector2f
+import org.newdawn.slick.geom.Circle
+import org.newdawn.slick.geom.Shape
 
 /**
  * 
@@ -33,27 +36,22 @@ public class Starfield {
         }
     }
 
-    public void warp() {
+    public void warp(Closure onEnd) {
         warp = new GraphicsAnimation(
-                frames : 60,
-                totalTime: 3000,
-                drawClosure: {Graphics g, int frame ->
+                frames : 60 * 3,
+                totalTime: 2 * 1000,
+                onNewFrame: {int lastFrame, int frame ->
+                    float advance = (float)((float)frame/10f * (float)frame/10f * (1f / 180f)) as float;
                     stars.each {Star s ->
-                        float endx = s.x - s.trail.centerX;
-                        float endy = s.y - s.trail.centerY;
-                        float startx = endx / frame;
-                        float starty = endy / frame;
-                        def fill = new GradientFill(startx, starty, s.color, (float)(endx/5), (float)(endy/5), Color.black);
-                        g.fill(s.trail, fill);
-                        //g.scale(1, 1);
-                        /*g.color = Color.green;
-                        g.fillOval((float)(s.trail.centerX + startx), (float)(s.trail.centerY + starty), 5f, 5f);
-                        g.color = Color.red;
-                        g.fillOval((float)(s.trail.centerX + endx), (float)(s.trail.centerY + endy), 5f, 5f);
-                        */
+                        s.updateTrail(advance);
                     }
                 },
-                endClosure : { warp = null; }
+                onRender: {Graphics g, int frame ->
+                    stars.each {Star s ->
+                        s.render(g);
+                    }
+                },
+                onEnd : { warp = null; onEnd() }
         );
         warp.start();
     }
@@ -63,22 +61,21 @@ public class Starfield {
     }
 
     public void draw(Graphics g) {
-        if (rnd.nextInt(3) == 1) {
-            [1..30].each {
-                Star s = stars.get(rnd.nextInt(stars.size()));
-                def mod = (rnd.nextBoolean() ? s.size + 1 : s.size - 1);
-                mod = Math.max(0, Math.min(5, mod));
-                s.size = mod;
+        if (!warp) {
+            if (rnd.nextInt(3) == 1) {
+                [1..30].each {
+                    Star s = stars.get(rnd.nextInt(stars.size()));
+                    def mod = (rnd.nextBoolean() ? s.size + 1 : s.size - 1);
+                    mod = Math.max(0, Math.min(5, mod));
+                    s.size = mod;
+                }
             }
+            stars.each {Star s ->
+                s.render(g);
+            };
+        } else {
+            warp.render(g);
         }
-        stars.each {Star s ->
-            g.color = s.color;
-            float rad = s.size / 2;
-            g.fillOval((float)(s.x - rad), (float)(s.y - rad), s.size, s.size);
-            if (warp != null) {
-                warp.render(g); 
-            }
-        };
     }
 }
 
@@ -90,13 +87,17 @@ class Star {
     final Color color;
     final Point2D warpPoint;
     final Polygon trail;
+    final float slope;
+    final Line line;
+    Shape warpTrail;
+
 
     public Star(Map args=[:]) {
 
         args.each { key, value -> this.@"$key" = value }
         //println("x:${x} y:${y}");
-        Line line = new Line((float)bounds.centerX, (float)bounds.centerY, x, y);
-        float slope = (line.DX == 0f ? Float.MIN_VALUE : line.DY/line.DX);
+        line = new Line((float)bounds.centerX, (float)bounds.centerY, x, y);
+        slope = (line.DX == 0f ? Float.MIN_VALUE : line.DY/line.DX);
         float b = y - (slope * x);
 
         Float endx = null;
@@ -126,14 +127,58 @@ class Star {
         }
         //println("cx:${bounds.centerX} cy:${bounds.centerY} x:${x} y:${y} sloap:${sloap} endx:${endx} endy:${endy}");
         warpPoint = new Point2D.Float(endx, endy);
+    }
+
+    public Star advance(float percent) {
+
+        Vector2f start = new Vector2f(x, y);
+        Vector2f end = new Vector2f((float)warpPoint.x, (float)warpPoint.y);
+        Vector2f mid = end.sub(start);
+        Vector2f pt = start.add(new Vector2f(mid.x * percent as float, mid.y * percent as float));
+        return new Star(
+                bounds: bounds,
+                x: pt.x,
+                y: pt.y,
+                size: size,
+                color: color
+                );
+    }
+
+    public void render(Graphics g) {
+        g.color = color;
+        if (warpTrail == null) {
+            float rad = size / 2;
+            g.fillOval((float)(x - rad), (float)(y - rad), size, size);
+        } else {
+            Line top = new Line(warpTrail.points[0], warpTrail.points[1], warpTrail.points[2], warpTrail.points[3]);
+            Line bottom = new Line(warpTrail.points[4], warpTrail.points[5], warpTrail.points[6], warpTrail.points[7]);
+            float endx = warpTrail.centerX - bottom.centerX;
+            float endy = warpTrail.centerY - bottom.centerY;
+            float startx = warpTrail.centerX - top.centerX;
+            float starty = warpTrail.centerY - top.centerY;
+            def fill = new GradientFill(startx, starty, color, endx, endy, Color.black);
+            g.fill(warpTrail, fill);
+            float rad = size / 2;
+            g.fillOval((float)(bottom.centerX - rad), (float)(bottom.centerY - rad), size, size);
+        }
+        
+
+    }
+
+    public void updateTrail(float percent)  {
+
+        Vector2f start = new Vector2f(x, y);
+        Vector2f end = new Vector2f((float)warpPoint.x, (float)warpPoint.y);
+        Vector2f mid = end.sub(start);
+        Vector2f pt = start.add(new Vector2f(mid.x * percent as float, mid.y * percent as float));
 
         float warpAngle = Math.atan(slope);
         if (line.DX < 0) {
             warpAngle += Math.PI;
         }
-        float len = new Line(x, y, (float)warpPoint.x, (float)warpPoint.y).length() + size;
-        Polygon rect = new Polygon([x, y-size, x, y+size, x + len, y - (size*2), x + len, y + (size*2)] as float[]);
-        trail = rect.transform(Transform.createRotateTransform((float)warpAngle, x, y));
+        float len = new Line(x, y, (float)pt.x, (float)pt.y).length() + size;
+        Polygon rect = new Polygon([x, y-size/2, x, y+size/2, x + len, y + size/2, x + len, y - size/2] as float[]);
+        warpTrail =  rect.transform(Transform.createRotateTransform(warpAngle, x, y));
     }
 
 }

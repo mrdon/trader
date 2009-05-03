@@ -1,6 +1,6 @@
 package org.twdata.trader.model;
 
-@Immutable final class Commodity implements Comparable {
+@Immutable final public class Commodity implements Comparable {
 
     String name;
     int minPrice;

@@ -10,7 +10,7 @@ import org.twdata.trader.command.CommandResponse
 
 public class VisitMarket extends AbstractCommand {
 
-    public int getTurnCost()
+    public int getTimeCost()
     {
         return 1;
     }

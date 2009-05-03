@@ -80,8 +80,10 @@ public class ShipState extends BasicGameState {
                 session: session,
                 onCitySelect: {String cityName ->
                     hideUniverseMap();
-                    starfield.warp();
-                    session.executeCommand("move", [toCity: cityName]);
+                    starfield.warp({
+                        session.executeCommand("move", [toCity: cityName]);
+                        starfield = new Starfield(200, new Rectangle2D.Float(0, 768-710, 1024, 768-170));
+                    });
                 },
                 onClose: {hideUniverseMap()});
         universeMap.init();
@@ -163,9 +165,7 @@ public class ShipState extends BasicGameState {
             }
         }
         if (!universeMap && !marketWindow) {
-            if (input.isKeyDown(Input.KEY_W)) {
-                starfield.warp();
-            } else if (input.isKeyPressed(Input.KEY_U)) {
+            if (input.isKeyPressed(Input.KEY_U)) {
                 if (!universeMap) {
                     displayUniverseMap();
                 } else {

@@ -17,7 +17,5 @@ public interface Session
 
     Trader getPlayer();
 
-    TraderEventManager getEventManager();
-
     void executeCommand(String name, Map<String,?> args) throws CommandException;
 }

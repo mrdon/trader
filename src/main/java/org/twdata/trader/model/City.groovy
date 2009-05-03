@@ -3,7 +3,7 @@ package org.twdata.trader.model
 import org.twdata.trader.model.Coordinate
 import org.twdata.trader.model.Market
 
-class City {
+public class City {
     String name;
     Market market;
     Coordinate coordinate;

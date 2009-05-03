@@ -10,5 +10,7 @@ public class Game  {
     Map<String,Trader> traders;
     Map<String,Commodity> commodities;
     Map<String,ShipType> shipTypes;
+    
+    int age = 2000;
 
 }

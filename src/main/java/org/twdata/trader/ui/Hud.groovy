@@ -27,6 +27,7 @@ import org.fenggui.util.Color
 import org.fenggui.background.PlainBackground
 import org.fenggui.Label
 import org.fenggui.layout.GridLayout
+import org.twdata.trader.event.EventManager
 
 /**
  * 
@@ -40,7 +41,7 @@ public class Hud {
     private TextEditor console;
     private Label statCredits;
     private Label statCity;
-    private Label statTurns;
+    private Label statAge;
     private Label statFreeHolds;
 
     public Hud(GameContainer container, ShipState state, Session session) {
@@ -69,7 +70,7 @@ public class Hud {
             market.getAppearance().setPadding(new Spacing(5, 5));
 
             console = new TextEditor(true);
-            session.eventManager.register(new CommandListener(onEvent: { CommandExecutedEvent evt ->
+            EventManager.register(new CommandListener(onEvent: { CommandExecutedEvent evt ->
                     console.appendText("- ${evt.command.toString()}\n");
                     console.setCursorIndex(console.getText().length());
             }));
@@ -103,19 +104,18 @@ public class Hud {
             statCredits = label(session.player.credits as String);
             stats.addWidget(statCredits);
             
-            stats.addWidget(label("Turns:"));
-            statTurns = label(session.player.turns as String);
-            stats.addWidget(statTurns);
-
-
             stats.addWidget(label("Free holds:"));
             statFreeHolds = label(session.player.ship.freeHolds as String);
             stats.addWidget(statFreeHolds);
 
-            session.getEventManager().register(new CommandListener(onEvent: { CommandExecutedEvent evt ->
+            stats.addWidget(label("Date:"));
+            statAge = label(session.game.age + " sd");
+            stats.addWidget(statAge);
+
+            EventManager.register(new CommandListener(onEvent: { CommandExecutedEvent evt ->
                     statCity.text = session.player.city.name;
                     statCredits.text = session.player.credits as String;
-                    statTurns.text = session.player.turns as String;
+                    statAge.text = session.game.age + " sd";
                     statFreeHolds.text = session.player.ship.freeHolds as String;
                 }));
             desk.addWidget(stats);

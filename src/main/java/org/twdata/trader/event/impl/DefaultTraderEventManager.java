@@ -29,7 +29,7 @@ public class DefaultTraderEventManager implements org.twdata.trader.event.Trader
      */
     public DefaultTraderEventManager()
     {
-        this(new ListenerMethodSelector[]{ new MethodNameListenerMethodSelector("channel"), new AnnotationListenerMethodSelector()});
+        this(new ListenerMethodSelector[]{ new ClosureListenerMethodSelector(), new AnnotationListenerMethodSelector()});
     }
 
     /**
@@ -86,11 +86,12 @@ public class DefaultTraderEventManager implements org.twdata.trader.event.Trader
             {
                 if (m.getParameterTypes().length != 1)
                 {
-                    throw new IllegalArgumentException("Listener methods must only have one argument");
+                    log.debug("Listener methods must only have one argument, " + m.getName() + " has " + m.getParameterTypes().length);
+                } else {
+                    final Set<Listener> listeners = eventsToListener.get(m.getParameterTypes()[0]);
+                    listeners.add(new Listener(listener, m));
+                    listenerFound.set(true);
                 }
-                final Set<Listener> listeners = eventsToListener.get(m.getParameterTypes()[0]);
-                listeners.add(new Listener(listener, m));
-                listenerFound.set(true);
             }
         });
         if (!listenerFound.get())

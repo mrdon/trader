@@ -18,6 +18,7 @@ import org.twdata.trader.command.CommandFormatException
 import org.twdata.trader.command.CommandResponse
 import org.twdata.trader.event.TraderEventManager
 import org.twdata.trader.event.events.CommandExecutedEvent
+import org.twdata.trader.event.EventManager
 
 /**
  * 
@@ -26,12 +27,10 @@ import org.twdata.trader.event.events.CommandExecutedEvent
 public class DefaultSession implements Session {
     private final Game game;
     private final Trader player;
-    private int turnsLeft;
     private final Map<String,Class<Command>> commands;
     private GameState state;
-    private final TraderEventManager eventManager;
 
-    public DefaultSession (Game game, Trader player, Set<Class<Command>> commands, TraderEventManager eventManager) {
+    public DefaultSession (Game game, Trader player, Set<Class<Command>> commands) {
         def cmds = [:];
         commands.each {Class<Command> it ->
             cmds[it.simpleName.toLowerCase()] = new CommandExecutor(it);
@@ -39,9 +38,7 @@ public class DefaultSession implements Session {
         this.commands = cmds;
         this.player = player;
         this.game = game;
-        this.eventManager = eventManager;
         state = GameState.IN_CITY;
-        player.turns = 50;
     }
 
     public Trader getPlayer() {
@@ -50,17 +47,6 @@ public class DefaultSession implements Session {
 
     public Game getGame() {
         return game;
-    }
-
-    private boolean consumeTurn(int turn) {
-        if (turnsLeft - turn < 0) {
-            System.out.println("You are out of turns");
-            return false;
-        } else {
-            System.out.println(turnsLeft + " turns remaining");
-            turnsLeft -= turn;
-            return true;
-        }
     }
 
     public void executeCommand(String name, Map<String,?> cmdArgs) throws CommandException, CommandFormatException
@@ -98,7 +84,7 @@ public class DefaultSession implements Session {
 
             // test for not null
 
-            Command cmd = executor.commandClass.newInstance(args);
+            Command cmd = (Command) executor.commandClass.newInstance(args);
 
             CommandUtil.eachPrivateParamField(executor.commandClass, { Field f ->
                 if (f.getAnnotation(NotNull.class)) {
@@ -113,18 +99,10 @@ public class DefaultSession implements Session {
                 throw new CommandFormatException("Errors: " + errors);
             }
 
-            if (player.turns < cmd.getTurnCost()) {
-                throw new CommandException("Not enough turns left");
-            } else {
-                player.turns -= cmd.getTurnCost();
-                CommandResponse res = cmd.execute();
-                eventManager.broadcast(new CommandExecutedEvent(command: cmd, response: res, session:this));
-                //System.out.println(cmd.toString());
-                //if (cmd.getTurnCost() > 0) {
-                //    System.out.println("You have " + player.turns + " turns and " + player.credits + " credits left");
-                //}
-                //return res;
-            }
+            game.age += cmd.getTimeCost();
+            CommandResponse res = cmd.execute();
+            EventManager.broadcast(new CommandExecutedEvent(command: cmd, response: res, session:this));
+
         }  else {
             throw new CommandFormatException("Invalid command:" + name);
         }
@@ -144,9 +122,6 @@ public class DefaultSession implements Session {
         return c;
     }
 
-    public TraderEventManager getEventManager() {
-        return eventManager;
-    }
 }
 class CommandExecutor {
     final Class<Command> commandClass;

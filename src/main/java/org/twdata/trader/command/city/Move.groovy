@@ -14,7 +14,7 @@ import org.twdata.trader.command.CommandResponse
 public class Move extends AbstractCommand {
     @NotNull @Param City toCity;
 
-    public int getTurnCost() {
+    public int getTimeCost() {
         return 4;
     }
 

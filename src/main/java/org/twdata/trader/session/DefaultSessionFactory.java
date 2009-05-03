@@ -19,19 +19,17 @@ public class DefaultSessionFactory implements SessionFactory
 
     private final Set<Class<Command>> commands;
     private final DataLoader dataLoader;
-    private final TraderEventManager eventManager;
 
-    public DefaultSessionFactory(DataLoader dataLoader, Set<Class<Command>> commands, TraderEventManager eventManager)
+    public DefaultSessionFactory(DataLoader dataLoader, Set<Class<Command>> commands)
     {
         this.commands = commands;
         this.dataLoader = dataLoader;
-        this.eventManager = eventManager;
     }
 
     public Session create(String name)
     {
         Game game = dataLoader.load(name);
         Trader player = (Trader) game.getTraders().get(name);
-        return new DefaultSession(game, player, commands, eventManager);
+        return new DefaultSession(game, player, commands);
     }
 }

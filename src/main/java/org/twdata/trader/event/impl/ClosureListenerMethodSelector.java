@@ -1,25 +1,14 @@
 package org.twdata.trader.event.impl;
 
+import groovy.lang.Closure;
+
 import java.lang.reflect.Method;
 
 /**
  * Listener method selector that makes its determination by matching the method name
  */
-public class MethodNameListenerMethodSelector implements ListenerMethodSelector
+public class ClosureListenerMethodSelector implements ListenerMethodSelector
 {
-    private final String methodName;
-
-    public MethodNameListenerMethodSelector()
-    {
-        this("channel");
-    }
-
-    public MethodNameListenerMethodSelector(String s)
-    {
-        this.methodName = s;
-    }
-
-
     /**
      * Determines if the listener method has the name as the one configured
      * @param method The method to test
@@ -30,6 +19,7 @@ public class MethodNameListenerMethodSelector implements ListenerMethodSelector
         if (method == null)
             throw new IllegalArgumentException("Method cannot be null");
 
-        return methodName.equals(method.getName());
+        return "call".equals(method.getName()) && method.getParameterTypes().length == 1 &&
+                method.getParameterTypes()[0] == Object.class && method.getDeclaringClass().isAssignableFrom(Closure.class);
     }
 }

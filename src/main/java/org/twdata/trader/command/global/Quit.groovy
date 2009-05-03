@@ -16,7 +16,7 @@ public class Quit extends AbstractCommand {
 
     public String toString()
     {
-        return "Exit game with " + player.credits + " credits and " + player.turns + " turns";
+        return "Exit game with " + player.credits + " credits";
     }
 
 
