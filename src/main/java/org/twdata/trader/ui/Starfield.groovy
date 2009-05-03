@@ -178,7 +178,7 @@ class Star {
         }
         float len = new Line(x, y, (float)pt.x, (float)pt.y).length() + size;
         Polygon rect = new Polygon([x, y-size/2, x, y+size/2, x + len, y + size/2, x + len, y - size/2] as float[]);
-        warpTrail =  rect.transform(Transform.createRotateTransform(warpAngle, x, y));
+        warpTrail =  rect.transform(Transform.createRotateTransform(warpAngle as float, x, y));
     }
 
 }
