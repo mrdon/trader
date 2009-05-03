@@ -80,7 +80,7 @@ public class Market {
     }
 }
 
-@Immutable final static class Price {
+@Immutable final class Price {
     int sell;
     int buy;
 }
