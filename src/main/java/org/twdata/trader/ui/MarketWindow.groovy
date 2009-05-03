@@ -56,12 +56,14 @@ public class MarketWindow extends HudWindow {
         top.setLayoutData(BorderLayoutData.NORTH);
         main.addWidget(top);
 
-        Label priceEvent = new Label(market.activeEvent ? market.activeEvent.text : "");
-        priceEvent.getAppearance().setAlignment(Alignment.MIDDLE);
-        priceEvent.getAppearance().add(new PlainBorder(Color.RED, 1));
-        priceEvent.getAppearance().setMargin(new Spacing(5,50));
-        priceEvent.getAppearance().setPadding(new Spacing(5, 5));
-        top.addWidget(priceEvent);
+        if (market.activeEvent) {
+            Label priceEvent = new Label(market.activeEvent.text);
+            priceEvent.getAppearance().setAlignment(Alignment.MIDDLE);
+            priceEvent.getAppearance().add(new PlainBorder(Color.RED, 1));
+            priceEvent.getAppearance().setMargin(new Spacing(5,50));
+            priceEvent.getAppearance().setPadding(new Spacing(5, 5));
+            top.addWidget(priceEvent);
+        }
         Container table = new Container();
         table.getAppearance().setMargin(new Spacing(10, 10));
         table.getAppearance().setPadding(new Spacing(5, 5));
