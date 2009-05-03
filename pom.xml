@@ -26,7 +26,7 @@
     <artifactId>trader</artifactId>
     <name>Trader</name>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
 
     <description>
         Simple trading game
