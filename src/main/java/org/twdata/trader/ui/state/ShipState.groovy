@@ -18,6 +18,7 @@ import org.twdata.trader.model.City
 import org.twdata.trader.ui.UniverseMap
 import org.twdata.trader.ui.MarketWindow
 import org.twdata.trader.model.Commodity
+import org.newdawn.slick.Animation
 
 /**
  * 
@@ -34,12 +35,19 @@ public class ShipState extends BasicGameState {
     private MarketWindow marketWindow;
     private Session session;
     private GameContainer gameContainer;
+    private final Animation shipApproach;
 
 
     def ShipState(TrueTypeFont font, Session session)
     {
         this.font = font;
         this.session = session;
+        Image[] ann = new Image[101];
+        for (int x in 25..125) {
+            def num = String.format('%04d',x);
+            ann[x-25] = new Image("animations/ship1-approach/${num}.png");
+        }
+        shipApproach = new Animation(ann, 4000/100 as int);
     }
 
     public int getID()
@@ -137,7 +145,8 @@ public class ShipState extends BasicGameState {
         if (!starfield.inWarp())
             planets[session.player.city.imageId].draw(200f, 200f);
         g.setFont(font);
-        g.setColor(Color.green); 
+        g.setColor(Color.green);
+        shipApproach.draw(1024-800,0);
 
         if (hud) hud.render(g);
         //g.drawString(session.player.city.name, 150f, 680f);
@@ -148,6 +157,7 @@ public class ShipState extends BasicGameState {
         if (marketWindow) {
             marketWindow.render(g);
         }
+
     }
 
     public void update(GameContainer gc, StateBasedGame game, int i)
